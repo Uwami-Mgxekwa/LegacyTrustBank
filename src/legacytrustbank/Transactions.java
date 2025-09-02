@@ -10,72 +10,30 @@ public class Transactions extends javax.swing.JFrame {
 
     public Transactions() {
         initComponents();
-        updateTbl();
+        supabaseService = new SupabaseService(); 
+        loadTransactionsFromDatabase();
     }
 
-    private DefaultTableModel model;
+    private final SupabaseService supabaseService;
+    private final int currentUserId = 1;
 
-    private void updateTbl() {
-    String filePath = "C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/transactions.txt";
-    File file = new File(filePath);
+    private void loadTransactionsFromDatabase() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0); 
 
-    DefaultTableModel model = (DefaultTableModel) table.getModel(); // Make sure 'jTable1' is accessible here
+        java.util.List<Object[]> transactions = supabaseService.getAllUserTransactions(currentUserId);
 
-    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-        String line;
-
-        model.setRowCount(0);
-
-        double balance = 0.0;
-
-        while ((line = br.readLine()) != null) {
-            System.out.println("Reading line: " + line);
-
-            String[] data = line.split(" on ");
-            if (data.length != 2) {
-                System.out.println("Invalid format: " + line); 
-                continue;
-            }
-            String transactionDetail = data[0];
-            String dateTime = data[1];
-
-            String[] transactionParts = transactionDetail.split(": ");
-            if (transactionParts.length != 2) {
-                System.out.println("Invalid transaction detail format: " + transactionDetail); 
-                continue;
-            }
-            String transactionType = transactionParts[0];
-            String amountStr = transactionParts[1].replace("R", ""); 
-            double amount = Double.parseDouble(amountStr);
-
-            String[] dateTimeParts = dateTime.split(" ");
-            if (dateTimeParts.length != 4) {
-                System.out.println("Invalid date-time format: " + dateTime); 
-                continue;
-            }
-            String date = dateTimeParts[0] + " " + dateTimeParts[1] + " " + dateTimeParts[2];
-            String time = dateTimeParts[3];
-
-            // Update balance based on transaction type
-            switch (transactionType) {
-                case "Deposit":
-                    balance += amount;
-                    break;
-                case "Withdrawal":
-                case "Send":
-                    balance -= amount;
-                    break;
-            }
-
-            model.addRow(new Object[]{date, time, transactionType, amountStr, balance});
+        for (Object[] transaction : transactions) {
+            model.addRow(transaction);
         }
 
-        System.out.println("Data loaded successfully!");
-
-    } catch (IOException ex) {
-        System.out.println("An error occurred while loading data: " + ex.getMessage());
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found for user " + currentUserId);
+        } else {
+            System.out.println("Loaded " + transactions.size() + " transactions from database");
+        }
     }
-}
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -111,10 +69,10 @@ public class Transactions extends javax.swing.JFrame {
         table.setBackground(new java.awt.Color(255, 255, 255));
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"2024-12-17", "02-11 pm", "Sent", "7600"}
+
             },
             new String [] {
-                "Date", "Time", "Trasaction Type", "Amount (R)"
+                "Date", "Description", "Trasaction Type", "Amount (R)"
             }
         ) {
             Class[] types = new Class [] {

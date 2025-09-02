@@ -25,6 +25,88 @@ public class SupabaseService {
     private Connection connect() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
+    
+    /**
+    * Fetches all transactions for a specific user's account.
+    * @param userId The ID of the user.
+    * @param accountType The type of account (e.g., "Current", "Savings").
+    * @return A list of transaction data as Object arrays.
+    */
+   public java.util.List<Object[]> getUserTransactions(int userId, String accountType) {
+       java.util.List<Object[]> transactions = new java.util.ArrayList<>();
+       String sql = """
+           SELECT t.transaction_date, t.description, t.transaction_type, t.amount 
+           FROM transactions t 
+           JOIN accounts a ON t.account_id = a.account_id 
+           WHERE a.user_id = ? AND a.account_type = ? 
+           ORDER BY t.transaction_date DESC
+           """;
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setInt(1, userId);
+           pstmt.setString(2, accountType);
+
+           ResultSet rs = pstmt.executeQuery();
+
+           while (rs.next()) {
+               Timestamp timestamp = rs.getTimestamp("transaction_date");
+               String date = timestamp.toLocalDateTime().toLocalDate().toString();
+               String description = rs.getString("description");
+               String transactionType = rs.getString("transaction_type");
+               double amount = rs.getDouble("amount");
+
+               transactions.add(new Object[]{date, description, transactionType, String.format("%.2f", amount)});
+           }
+
+       } catch (SQLException e) {
+           System.out.println("Error fetching transactions: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return transactions;
+   }
+
+   /**
+    * Fetches all transactions for all of a user's accounts combined.
+    * @param userId The ID of the user.
+    * @return A list of transaction data as Object arrays.
+    */
+   public java.util.List<Object[]> getAllUserTransactions(int userId) {
+       java.util.List<Object[]> transactions = new java.util.ArrayList<>();
+       String sql = """
+           SELECT t.transaction_date, t.description, t.transaction_type, t.amount, a.account_type 
+           FROM transactions t 
+           JOIN accounts a ON t.account_id = a.account_id 
+           WHERE a.user_id = ? 
+           ORDER BY t.transaction_date DESC
+           """;
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setInt(1, userId);
+
+           ResultSet rs = pstmt.executeQuery();
+
+           while (rs.next()) {
+               Timestamp timestamp = rs.getTimestamp("transaction_date");
+               String date = timestamp.toLocalDateTime().toLocalDate().toString();
+               String description = rs.getString("description") + " (" + rs.getString("account_type") + ")";
+               String transactionType = rs.getString("transaction_type");
+               double amount = rs.getDouble("amount");
+
+               transactions.add(new Object[]{date, description, transactionType, String.format("%.2f", amount)});
+           }
+
+       } catch (SQLException e) {
+           System.out.println("Error fetching all transactions: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return transactions;
+   }
 
     /**
      * Fetches the balance for a specific account type for a given user.
