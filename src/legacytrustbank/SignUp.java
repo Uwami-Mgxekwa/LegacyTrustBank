@@ -2,64 +2,21 @@ package legacytrustbank;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class SignUp extends javax.swing.JFrame {
 
     public SignUp() {
         initComponents();
-        Image icon = new ImageIcon("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/images/newLogo.png").getImage(); 
+        supabaseService = new SupabaseService();
+        Image icon = new ImageIcon(getClass().getResource("/images/newLogo.png")).getImage(); 
         this.setIconImage(icon); 
     }
+    
+    private final SupabaseService supabaseService;
 
-     public void saveToFile(String username, String email, String password) {
-        String filePath = "C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/database.txt";
-        File file = new File(filePath);
 
-        try (FileWriter fw = new FileWriter(file, true); // 'true' to append to the file
-             BufferedWriter bw = new BufferedWriter(fw)) {
-
-            // Write data from JTextField inputs
-            bw.write(username + " " + email + " " + password);
-            bw.newLine(); // Move to the next line after writing
-
-            bw.flush(); // Ensure data is written to the file
-            System.out.println("Data written successfully!");
-            new Correct().setVisible(true);
-
-        } catch (IOException ex) {
-            System.out.println("An error occurred: " + ex.getMessage());
-        }
-    }
-    
-    
-    private boolean userExists(String username, String email) {
-        DefaultTableModel tblModel = (DefaultTableModel) new database().table.getModel();
-        for (int i = 0; i < tblModel.getRowCount(); i++) {
-            String existingUsername = tblModel.getValueAt(i, 0).toString();
-            String existingEmail = tblModel.getValueAt(i, 1).toString();
-
-            // Check if the username or email already exists
-            if (existingUsername.equals(username) || existingEmail.equals(email)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -149,26 +106,29 @@ public class SignUp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        
-        String username = userName.getText();
-        String password = Email.getText();
-        String email = Password.getText();
+        String username = userName.getText().trim();
+        String email = Email.getText().trim();
+        String password = Password.getText().trim();
         boolean hasError = false;
 
-        if (username.isBlank()) {
+        // Clear previous messages
+        displayUU.setText("");
+        displayEE.setText("");
+        displayPP.setText("");
+
+        if (username.isEmpty()) {
             displayUU.setText("Username blank");
             displayUU.setForeground(Color.red);
             hasError = true;
         }
 
-        if (email.isBlank()) {
+        if (email.isEmpty()) {
             displayEE.setText("Email is blank");
             displayEE.setForeground(Color.red);
             hasError = true;
         }
 
-        if (password.isBlank()) {
+        if (password.isEmpty()) {
             displayPP.setText("Password is blank");
             displayPP.setForeground(Color.red);
             hasError = true;
@@ -179,60 +139,38 @@ public class SignUp extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Please agree to our terms and conditions to proceed");
             }
             else {
-                if (userExists(username, email)) {
-                    displayUU.setText("Use a different Username");
+                if (supabaseService.userExists(username, email)) {
+                    displayUU.setText("Username already exists");
                     displayUU.setForeground(Color.red);
-                    displayEE.setText("Use a different Email Address");
+                    displayEE.setText("Email already exists");
                     displayEE.setForeground(Color.red);
-                    displayPP.setText("Use a different Password");
-                    displayPP.setForeground(Color.red);
                     JOptionPane.showMessageDialog(null, "Account already exists!");
                 }
                 else {
-                    displayUU.setText("Valid");
-                    displayUU.setForeground(Color.green);
-                    displayEE.setText("Valid");
-                    displayEE.setForeground(Color.green);
-                    displayPP.setText("Valid");
-                    displayPP.setForeground(Color.green);
-                    
-                    // Save the user data
-                    saveToFile(username, email, password);
+                    // Use username as full name for now, or add a separate field
+                    int userId = supabaseService.createUser(username, email, password, username);
 
-                    // Add the data to the table
-                    String[] data = {username, email, password};
-                    DefaultTableModel tblModel = (DefaultTableModel) new database().table.getModel();
-                    tblModel.addRow(data);
+                    if (userId != -1) {
+                        displayUU.setText("Valid");
+                        displayUU.setForeground(Color.green);
+                        displayEE.setText("Valid");
+                        displayEE.setForeground(Color.green);
+                        displayPP.setText("Valid");
+                        displayPP.setForeground(Color.green);
+
+                        new Correct().setVisible(true);
+
+                        // Clear form
+                        userName.setText("");
+                        Email.setText("");
+                        Password.setText("");
+                        box.setSelected(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error creating account. Please try again.");
+                    }
                 }
             }
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        }      
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

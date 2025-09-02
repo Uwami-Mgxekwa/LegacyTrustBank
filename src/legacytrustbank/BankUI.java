@@ -20,22 +20,30 @@ public class BankUI extends javax.swing.JFrame {
     public BankUI() {
         initComponents();
         supabaseService = new SupabaseService(); 
+        currentUserId = Login.getCurrentUserId(); 
 
         Image icon = new ImageIcon(getClass().getResource("/images/newLogo.png")).getImage();
         this.setIconImage(icon);
+
         LocalDate currentDate = LocalDate.now();
-        String Ddate  = String.valueOf(currentDate);
+        String Ddate = String.valueOf(currentDate);
         date.setText(Ddate);
         dateTrans1.setText(Ddate);
         dateTrans2.setText(Ddate);
         dateTrans3.setText(Ddate);
 
         loadAndDisplayBalances();
+        updateUserGreeting(); // Add this line
         
     }
     private DefaultTableModel model;
     private final SupabaseService supabaseService;
-    private final int currentUserId = 1;
+    private final int currentUserId;
+    
+    private void updateUserGreeting() {
+        String fullName = supabaseService.getUserFullName(currentUserId);
+        jLabel1.setText("Hi, " + fullName.toUpperCase());
+    }
 
     
     private void loadAndDisplayBalances() {

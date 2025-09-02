@@ -2,9 +2,6 @@ package legacytrustbank;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import javax.swing.ImageIcon;
 
 
@@ -12,62 +9,17 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
+        supabaseService = new SupabaseService(); // Add this line
         Image icon = new ImageIcon(getClass().getResource("/images/newLogo.png")).getImage(); 
-        this.setIconImage(icon); 
+        this.setIconImage(icon);  
     }
     
-    private void checkLogin() {
-        String user = username.getText();
-        String pass = password.getText();
-
-        if(user.isBlank()){
-            message1.setText("Can't be empty");
-            message2.setText("Can't be empty");
-            message1.setForeground(Color.red);
-            message2.setForeground(Color.red);
-        }
-        else{
-            if (validateCredentials(user, pass)) {
-            message1.setText("Login successful!");
-            message1.setForeground(Color.GREEN);
-            message2.setText("Login successful!");
-            message2.setForeground(Color.GREEN);
-            new checkLogin().setVisible(true);
-            dispose();
-        } 
-         else {
-            message1.setText("Invalid username or password.");
-            message1.setForeground(Color.RED);
-            message2.setText("Invalid username or password.");
-            message2.setForeground(Color.RED);
-            new incorrectLogin().setVisible(true);
-        }
+    private final SupabaseService supabaseService;
+    private static int currentUserId = -1;
+    
+    public static int getCurrentUserId() {
+        return currentUserId;
     }
-    
-}
-
-    private boolean validateCredentials(String username, String password) {
-    String filePath = "C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/database.txt"; 
-    
-    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] credentials = line.split(" "); // Split by space
-            if (credentials.length >= 3) { // Ensure there are at least 3 parts (username, email, password)
-                String storedUsername = credentials[0];
-                String storedPassword = credentials[2];
-                if (storedUsername.equals(username) && storedPassword.equals(password)) {
-                    return true;
-                }
-            }
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-
-    return false;
-}
-    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -198,36 +150,34 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //checkLogin();
-        
-        String user = username.getText();
-        String pass = password.getText();
-        
-        if(user.isBlank()){
+        String user = username.getText().trim();
+        String pass = new String(password.getPassword());
+
+        if(user.isEmpty() || pass.isEmpty()){
             message1.setText("Can't be empty");
             message2.setText("Can't be empty");
             message1.setForeground(Color.red);
             message2.setForeground(Color.red);
+            return;
         }
-        else{
-            if (user.equalsIgnoreCase("Owami")&&pass.equalsIgnoreCase("1234")) {
+
+        int userId = supabaseService.validateLogin(user, pass);
+
+        if (userId != -1) {
+            currentUserId = userId;
             message1.setText("Login successful!");
             message1.setForeground(Color.GREEN);
             message2.setText("Login successful!");
             message2.setForeground(Color.GREEN);
             new checkLogin().setVisible(true);
             dispose();
-        } 
-         else {
+        } else {
             message1.setText("Invalid username or password.");
             message1.setForeground(Color.RED);
             message2.setText("Invalid username or password.");
             message2.setForeground(Color.RED);
             new incorrectLogin().setVisible(true);
         }
-    }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameKeyPressed

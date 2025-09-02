@@ -67,6 +67,157 @@ public class SupabaseService {
 
        return transactions;
    }
+   /**
+    * Validates user credentials for login.
+    * @param username The username to validate.
+    * @param password The plain text password to validate.
+    * @return The user ID if valid, -1 if invalid.
+    */
+   public int validateLogin(String username, String password) {
+       String sql = "SELECT user_id, password_hash FROM users WHERE username = ?";
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setString(1, username);
+           ResultSet rs = pstmt.executeQuery();
+
+           if (rs.next()) {
+               String storedHash = rs.getString("password_hash");
+               // For now, we'll do plain text comparison
+               // In production, you should hash the input password and compare hashes
+               if (password.equals(storedHash)) {
+                   return rs.getInt("user_id");
+               }
+           }
+
+       } catch (SQLException e) {
+           System.out.println("Error validating login: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return -1; // Invalid credentials
+   }
+
+   /**
+    * Checks if a username or email already exists.
+    * @param username The username to check.
+    * @param email The email to check.
+    * @return true if either username or email exists, false otherwise.
+    */
+   public boolean userExists(String username, String email) {
+       String sql = "SELECT COUNT(*) FROM users WHERE username = ? OR email = ?";
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setString(1, username);
+           pstmt.setString(2, email);
+
+           ResultSet rs = pstmt.executeQuery();
+           if (rs.next()) {
+               return rs.getInt(1) > 0;
+           }
+
+       } catch (SQLException e) {
+           System.out.println("Error checking if user exists: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return false;
+   }
+
+   /**
+    * Creates a new user account.
+    * @param username The username for the new account.
+    * @param email The email for the new account.
+    * @param password The password for the new account.
+    * @param fullName The full name of the user.
+    * @return The new user ID if successful, -1 if failed.
+    */
+   public int createUser(String username, String email, String password, String fullName) {
+       String sql = "INSERT INTO users (username, email, password_hash, full_name, created_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING user_id";
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setString(1, username);
+           pstmt.setString(2, email);
+           pstmt.setString(3, password); // In production, hash this password
+           pstmt.setString(4, fullName);
+
+           ResultSet rs = pstmt.executeQuery();
+           if (rs.next()) {
+               int userId = rs.getInt("user_id");
+               // Create default accounts for the new user
+               createDefaultAccounts(userId);
+               return userId;
+           }
+
+       } catch (SQLException e) {
+           System.out.println("Error creating user: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return -1;
+   }
+
+   /**
+    * Creates default Current and Savings accounts for a new user.
+    * @param userId The ID of the user to create accounts for.
+    */
+   private void createDefaultAccounts(int userId) {
+       String sql = "INSERT INTO accounts (user_id, account_type, balance) VALUES (?, ?, ?)";
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           // Create Current Account
+           pstmt.setInt(1, userId);
+           pstmt.setString(2, "Current");
+           pstmt.setDouble(3, 0.0);
+           pstmt.executeUpdate();
+
+           // Create Savings Account
+           pstmt.setInt(1, userId);
+           pstmt.setString(2, "Savings");
+           pstmt.setDouble(3, 0.0);
+           pstmt.executeUpdate();
+
+       } catch (SQLException e) {
+           System.out.println("Error creating default accounts: " + e.getMessage());
+           e.printStackTrace();
+       }
+   }
+
+   /**
+    * Gets the full name of a user by their ID.
+    * @param userId The ID of the user.
+    * @return The full name of the user, or "User" if not found.
+    */
+   public String getUserFullName(int userId) {
+       String sql = "SELECT full_name FROM users WHERE user_id = ?";
+
+       try (Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+           pstmt.setInt(1, userId);
+           ResultSet rs = pstmt.executeQuery();
+
+           if (rs.next()) {
+               return rs.getString("full_name");
+           }
+
+       } catch (SQLException e) {
+           System.out.println("Error getting user full name: " + e.getMessage());
+           e.printStackTrace();
+       }
+
+       return "User";
+   }
+   
+   
+   
 
    /**
     * Fetches all transactions for all of a user's accounts combined.
