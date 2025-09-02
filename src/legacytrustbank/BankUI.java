@@ -34,7 +34,7 @@ public class BankUI extends javax.swing.JFrame {
         
     }
     private DefaultTableModel model;
-    private SupabaseService supabaseService;
+    private final SupabaseService supabaseService;
     private final int currentUserId = 1;
 
     
@@ -46,25 +46,6 @@ public class BankUI extends javax.swing.JFrame {
        saving.setText(String.format("%.2f", savingsBal));
    }
   
-    private double loadSavingBalance() {
-    double balance=0;
-    try (BufferedReader reader = new BufferedReader(new FileReader("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/SavingsBalance.txt"))) {
-        String line = reader.readLine();
-        if (line != null) {
-            balance = Double.parseDouble(line);
-        }
-    } catch (IOException e) {
-        System.out.println("An error occurred while loading the balance: " + e.getMessage());
-    }
-    return balance;
-}
-
-    
-    private void loadAndDisplaySavingBalance() { 
-        double balance = loadSavingBalance();
-        String displayAmount = String.valueOf(balance);
-        saving.setText(displayAmount);
-    } 
     
     
     @SuppressWarnings("unchecked")
@@ -218,7 +199,7 @@ public class BankUI extends javax.swing.JFrame {
 
         jButton7.setBackground(new java.awt.Color(255, 255, 255));
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/speech-bubble-ezgif.com-resize.gif"))); // NOI18N
-        jButton7.setText("CONTACT US");
+        jButton7.setText("REFRESH WINDOW");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -433,10 +414,6 @@ public class BankUI extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(102, 102, 102));
         jLabel15.setText("Payee Account No.");
-
-        payee.setText("2056646370");
-
-        txtAmount.setText("10000");
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(102, 102, 102));
@@ -893,7 +870,6 @@ public class BankUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         String amountStr = txtAmount.getText();
         String payeeAccount = payee.getText();
 
@@ -910,7 +886,7 @@ public class BankUI extends javax.swing.JFrame {
             if (amountToSend > currentBal) {
                 DA.setForeground(Color.red);
                 DA.setText("Insufficient Funds");
-                new Error().setVisible(true); 
+                new Error().setVisible(true);
             } else {
                 String pin = JOptionPane.showInputDialog("Enter your pin to proceed with transaction");
                 if (!"1234".equals(pin)) {
@@ -932,7 +908,8 @@ public class BankUI extends javax.swing.JFrame {
                     tranAmount.setText(amountStr);
                     accNumber.setText(payeeAccount);
 
-                    ImageIcon icon = new ImageIcon(getClass().getResource("/images/red arrows.png"));
+                    // You can keep this part if you like the visual feedback
+                    ImageIcon icon = new ImageIcon(getClass().getResource("/images/red arrows.png"));;
                     jLabel19.setIcon(icon);
                 }
             }
@@ -949,18 +926,11 @@ public class BankUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-        try{
-            
-            Desktop.getDesktop().browse(new URL("https://wa.me/+27635722080?text=Hi_Legacy_Bank_im:%20").toURI());
-            
-        }catch(Exception e){
-            System.out.println(e);
-        }
+        new BankUI().setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
         try{
             
             Desktop.getDesktop().browse(new URL("https://wa.me/+27635722080?text=Hi_Legacy_Bank_im:%20").toURI());
@@ -974,11 +944,7 @@ public class BankUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -1001,7 +967,6 @@ public class BankUI extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new BankUI().setVisible(true);
