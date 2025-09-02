@@ -33,7 +33,7 @@ public class BankUI extends javax.swing.JFrame {
         dateTrans3.setText(Ddate);
 
         loadAndDisplayBalances();
-        updateUserGreeting(); // Add this line
+        updateUserGreeting();
         
     }
     private DefaultTableModel model;

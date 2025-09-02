@@ -9,7 +9,7 @@ public class Login extends javax.swing.JFrame {
 
     public Login() {
         initComponents();
-        supabaseService = new SupabaseService(); // Add this line
+        supabaseService = new SupabaseService(); 
         Image icon = new ImageIcon(getClass().getResource("/images/newLogo.png")).getImage(); 
         this.setIconImage(icon);  
     }
