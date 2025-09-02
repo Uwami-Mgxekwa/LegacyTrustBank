@@ -1,5 +1,5 @@
 const SUPABASE_URL = 'https://qujmowmhvpzssrrkysub.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key-here'; // Replace with your actual anon key
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1am1vd21odnB6c3Nycmt5c3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY1NDI2ODksImV4cCI6MjA3MjExODY4OX0.94S_bdTvBe94GLkSZNNXUOqesanNRQ1jT3UL6IeshG4'; // Replace with your actual anon key
 let supabaseClient = null;
 
 // Global Application State
@@ -868,9 +868,10 @@ document.addEventListener('DOMContentLoaded', initializeAccessibility);
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
+        const context = this; // <-- Capture the 'this' context
         const later = () => {
             clearTimeout(timeout);
-            func(...args);
+            func.apply(context, args); // <-- Use .apply() to pass the context
         };
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
