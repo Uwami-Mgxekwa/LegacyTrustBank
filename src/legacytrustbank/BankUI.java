@@ -4,15 +4,10 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -21,14 +16,12 @@ import javax.swing.table.DefaultTableModel;
 
 public class BankUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BankUI
-     */
+ 
     public BankUI() {
         initComponents();
-        supabaseService = new SupabaseService(); // Initialize the service
+        supabaseService = new SupabaseService(); 
 
-        Image icon = new ImageIcon("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/images/newLogo.png").getImage();
+        Image icon = new ImageIcon(getClass().getResource("/images/newLogo.png")).getImage();
         this.setIconImage(icon);
         LocalDate currentDate = LocalDate.now();
         String Ddate  = String.valueOf(currentDate);
@@ -40,32 +33,21 @@ public class BankUI extends javax.swing.JFrame {
         loadAndDisplayBalances();
         
     }
-    int Wcount;
-    int Dcount;
-    int Scount;
     private DefaultTableModel model;
     private SupabaseService supabaseService;
     private final int currentUserId = 1;
-    //private String historyFilePath = "C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/transactions.txt";
+
     
-    
-    
-    /**
-    * Loads balances from Supabase and updates the UI.
-    */
-   private void loadAndDisplayBalances() {
+    private void loadAndDisplayBalances() {
        double currentBal = supabaseService.getAccountBalance(currentUserId, "Current");
        double savingsBal = supabaseService.getAccountBalance(currentUserId, "Savings");
 
        currentBalance.setText(String.format("%.2f", currentBal));
        saving.setText(String.format("%.2f", savingsBal));
    }
-    
-    
-
-    
+  
     private double loadSavingBalance() {
-    double balance=0; // Default balance
+    double balance=0;
     try (BufferedReader reader = new BufferedReader(new FileReader("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/SavingsBalance.txt"))) {
         String line = reader.readLine();
         if (line != null) {
@@ -928,10 +910,10 @@ public class BankUI extends javax.swing.JFrame {
             if (amountToSend > currentBal) {
                 DA.setForeground(Color.red);
                 DA.setText("Insufficient Funds");
-                new Error().setVisible(true); // You can keep your custom dialogs
+                new Error().setVisible(true); 
             } else {
                 String pin = JOptionPane.showInputDialog("Enter your pin to proceed with transaction");
-                if (!"1234".equals(pin)) { // Use .equals for string comparison
+                if (!"1234".equals(pin)) {
                     JOptionPane.showMessageDialog(null, "Incorrect pin. Try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     double newBalance = currentBal - amountToSend;
