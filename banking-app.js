@@ -399,4 +399,81 @@ async function confirmPin() {
     
     if (pin !== '1234') {
         alert('Incorrect PIN. Please try again.');
-        pinInput.value =
+        pinInput.value = '';
+        return;
+    }
+    
+    if (window.pendingTransfer) {
+        await processTransfer(window.pendingTransfer);
+        closePinModal();
+    }
+}
+
+async function processTransfer(transferDetails) {
+    try {
+        showLoading();
+        
+        const { fromAccount, payeeAccount, payeeName, amount, message } = transferDetails;
+        
+        // Update balance
+        userAccounts[fromAccount].balance -= amount;
+        
+        // Create transaction
+        const newTransaction = {
+            id: Date.now(),
+            user_id: currentUser.id,
+            type: 'sent',
+            account: payeeAccount,
+            payee_name: payeeName,
+            amount: amount,
+            date: new Date().toISOString().split('T')[0],
+            description: message || 'Money transfer',
+            account_type: fromAccount
+        };
+        
+        transactions.unshift(newTransaction);
+        updateUI();
+        
+        const transferForm = document.getElementById('transferForm');
+        if (transferForm) transferForm.reset();
+        
+        showMessage('transferStatus', `R ${amount.toFixed(2)} sent successfully to ${payeeName}`, 'success');
+        
+    } catch (error) {
+        console.error('Transfer error:', error);
+        showMessage('transferStatus', 'Transfer failed. Please try again.', 'error');
+        userAccounts[transferDetails.fromAccount].balance += transferDetails.amount;
+        updateAccountBalances();
+    } finally {
+        hideLoading();
+    }
+}
+
+// Filter Functions
+function applyFilters() {
+    const accountFilter = document.getElementById('accountFilter');
+    const typeFilter = document.getElementById('typeFilter');
+    const dateFromFilter = document.getElementById('dateFromFilter');
+    const dateToFilter = document.getElementById('dateToFilter');
+    
+    if (!accountFilter || !typeFilter) return;
+    
+    let filteredTransactions = [...transactions];
+    
+    if (accountFilter.value !== 'all') {
+        filteredTransactions = filteredTransactions.filter(t => t.account_type === accountFilter.value);
+    }
+    
+    if (typeFilter.value !== 'all') {
+        filteredTransactions = filteredTransactions.filter(t => t.type === typeFilter.value);
+    }
+    
+    if (dateFromFilter && dateFromFilter.value) {
+        filteredTransactions = filteredTransactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            return transactionDate >= new Date(dateFromFilter.value);
+        });
+    }
+    
+    if (dateToFilter && dateToFilter.value) {
+        filteredTr
