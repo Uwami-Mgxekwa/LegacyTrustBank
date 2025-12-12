@@ -299,10 +299,16 @@ function showLoading(show) {
 
 // Check if user is already logged in
 function checkExistingSession() {
+    console.log('Checking existing session...');
     const userData = localStorage.getItem('ltb_user') || sessionStorage.getItem('ltb_user');
+    console.log('Existing user data:', userData);
+    
     if (userData) {
+        console.log('User already logged in, redirecting to dashboard...');
         // User is already logged in, redirect to dashboard
         window.location.href = 'dashboard.html';
+    } else {
+        console.log('No existing session found, staying on signup page');
     }
 }
 
