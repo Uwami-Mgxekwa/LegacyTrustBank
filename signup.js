@@ -7,10 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeSignupPage() {
+    console.log('Initializing signup page...');
     setupSignupForm();
     setupPasswordStrength();
     setupFormValidation();
     checkExistingSession();
+    console.log('Signup page initialization complete');
 }
 
 // Setup signup form handler
