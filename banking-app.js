@@ -530,12 +530,16 @@ function showLoading() {
         `;
         document.body.appendChild(overlay);
     }
-    overlay.classList.remove('hidden');
+    overlay.style.display = 'flex';
+    console.log('Loading overlay shown');
 }
 
 function hideLoading() {
     const overlay = document.getElementById('loadingOverlay');
-    if (overlay) overlay.classList.add('hidden');
+    if (overlay) {
+        overlay.style.display = 'none';
+        console.log('Loading overlay hidden');
+    }
 }
 
 function showLoginScreen() {
