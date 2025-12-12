@@ -9,11 +9,20 @@ function initializeLoginPage() {
     setupFormValidation();
 }
 
-// Check URL parameters for signup mode
+// Check URL parameters for success messages and pre-fill username
 function checkURLParams() {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('signup') === 'true') {
-        switchToSignup();
+    
+    // Pre-fill username if provided
+    const username = urlParams.get('username');
+    if (username) {
+        document.getElementById('loginUsername').value = decodeURIComponent(username);
+    }
+    
+    // Show success message if redirected from signup
+    const success = urlParams.get('success');
+    if (success === 'signup') {
+        showStatusMessage('Account created successfully! Please sign in with your credentials.', 'success');
     }
 }
 
