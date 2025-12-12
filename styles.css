@@ -807,6 +807,16 @@ p {
     line-height: 1.6;
 }
 
+.technology-card {
+    margin-top: 20px;
+    border: 2px solid var(--accent-gold);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(244, 228, 166, 0.05));
+}
+
+.technology-card h4 {
+    color: var(--accent-gold);
+}
+
 /* Contact Section */
 .contact {
     padding: 100px 0;
@@ -1330,11 +1340,75 @@ p {
     }
 }
 
+/* Brelinx Branding Styles */
+.brelinx-branding {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    text-align: center;
+}
+
+.brelinx-branding p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+[data-theme="dark"] .brelinx-branding p {
+    color: var(--text-secondary);
+}
+
+.brelinx-link {
+    color: var(--accent-gold) !important;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    font-weight: 600;
+}
+
+.brelinx-link:hover {
+    color: var(--accent-gold-light) !important;
+    text-decoration: underline;
+}
+
+.brelinx-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.brelinx-footer p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.dashboard-footer {
+    background: var(--bg-secondary);
+    border-top: var(--border-light);
+    padding: 15px 30px;
+    margin-top: auto;
+}
+
+.dashboard-footer .brelinx-branding {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-footer .brelinx-branding p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
 /* Print Styles */
 @media print {
     .theme-toggle,
     .navbar,
-    .hero-video {
+    .hero-video,
+    .brelinx-branding,
+    .brelinx-footer,
+    .dashboard-footer {
         display: none;
     }
     
