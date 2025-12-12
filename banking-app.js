@@ -32,7 +32,7 @@ async function initializeApp() {
             try {
                 currentUser = JSON.parse(savedUser);
                 console.log('Found saved user:', currentUser);
-                await loadUserData();
+                await loadUserData(true); // Show loading for saved sessions
                 showBankingInterface();
             } catch (error) {
                 console.log('Invalid saved session, clearing...');
@@ -506,7 +506,7 @@ function applyFilters() {
 
 async function refreshData() {
     if (!currentUser) return;
-    await loadUserData();
+    await loadUserData(true); // Show loading for manual refresh
     showMessage('transferStatus', 'Data refreshed successfully', 'success');
 }
 
