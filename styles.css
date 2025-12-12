@@ -128,7 +128,7 @@ p {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(20px);
     border-bottom: var(--border-light);
     z-index: 999;
@@ -136,7 +136,7 @@ p {
 }
 
 [data-theme="dark"] .navbar {
-    background: rgba(26, 26, 26, 0.95);
+    background: rgba(255, 255, 255, 0.95) !important;
 }
 
 .nav-container {
@@ -193,7 +193,7 @@ p {
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-primary);
+    color: #000000 !important;
     font-weight: 500;
     font-size: 15px;
     transition: var(--transition-smooth);
