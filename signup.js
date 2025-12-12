@@ -1,5 +1,8 @@
 // Signup Page JavaScript
+console.log('Signup JavaScript loaded successfully');
+
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Signup page DOM loaded, initializing...');
     initializeSignupPage();
 });
 
