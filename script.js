@@ -8,6 +8,12 @@ function initializeWebsite() {
     setupSmoothScrolling();
     setupAnimations();
     setupMobileMenu();
+    setupThemeToggle();
+}
+
+function setupThemeToggle() {
+    // Theme toggle functionality is handled in theme.js
+    // This function can be used for any additional theme-related setup
 }
 
 // Navigation functionality
