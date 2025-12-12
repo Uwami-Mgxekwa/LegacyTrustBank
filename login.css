@@ -688,6 +688,59 @@
     outline-offset: 2px;
 }
 
+/* Mobile Touch Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .auth-btn {
+        min-height: 48px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .input-wrapper input {
+        font-size: 16px; /* Prevents zoom on iOS */
+        min-height: 48px;
+    }
+    
+    .password-toggle {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .checkbox-wrapper {
+        min-height: 44px;
+        padding: 8px 0;
+    }
+}
+
+/* Mobile Keyboard Adjustments */
+@media screen and (max-height: 600px) {
+    .login-content {
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    
+    .login-branding {
+        display: none; /* Hide branding on small screens when keyboard is up */
+    }
+    
+    .login-form-container {
+        max-width: 100%;
+        margin: 0;
+    }
+}
+
+/* iOS Safari Specific */
+@supports (-webkit-touch-callout: none) {
+    .input-wrapper input {
+        -webkit-appearance: none;
+        border-radius: var(--radius-md);
+    }
+    
+    .auth-btn {
+        -webkit-appearance: none;
+        border-radius: var(--radius-md);
+    }
+}
+
 /* High Contrast Mode Support */
 @media (prefers-contrast: high) {
     .input-wrapper input {
