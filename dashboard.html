@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legacy Trust Bank - Web Banking</title>
+    <link rel="stylesheet" href="website/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏦</text></svg>">
+
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-form">
+            <div class="login-logo">
+                <div class="logo">LTB</div>
+                <div class="bank-title">Legacy Trust Bank</div>
+            </div>
+            <h2 class="login-title">Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter any username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter any password" required>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+            <div id="loginMessage" class="status-message hidden"></div>
+        </div>
+    </div>
+
+    <!-- Main Banking Interface -->
+    <div id="bankingInterface" class="hidden">
+        <div class="container">
+            <header class="header">
+                <div class="logo-section">
+                    <div class="logo">LTB</div>
+                    <div>
+                        <div class="bank-title">Legacy Trust Bank</div>
+                        <div style="font-size: 14px; color: #666;">Your Trusted Financial Partner</div>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="user-greeting" id="userGreeting">Hi, User</div>
+                    <div class="current-date" id="currentDate"></div>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <aside class="sidebar">
+                    <button class="nav-button active" data-section="dashboard">
+                        📊 Dashboard
+                    </button>
+                    <button class="nav-button" data-section="transactions">
+                        💳 Transactions
+                    </button>
+                    <button class="nav-button" data-section="transfer">
+                        💸 Transfer Funds
+                    </button>
+                    <button class="nav-button" data-section="notifications">
+                        🔔 Notifications
+                    </button>
+                    <button class="nav-button" onclick="refreshData()">
+                        🔄 Refresh
+                    </button>
+                    <button class="nav-button sign-out-btn" onclick="signOut()">
+                        🚪 Sign Out
+                    </button>
+                </aside>
+
+                <main class="dashboard">
+                    <!-- Dashboard Section -->
+                    <div id="dashboardSection" class="section">
+                        <div class="accounts-section">
+                            <h2 class="section-title">Account Summary</h2>
+                            <div class="accounts-grid">
+                                <div class="account-card">
+                                    <div class="account-type">Current Account</div>
+                                    <div class="account-balance">R <span id="currentBalance">0.00</span></div>
+                                    <div class="card-number">•••• •••• 0220</div>
+                                </div>
+                                <div class="account-card">
+                                    <div class="account-type">Savings Account</div>
+                                    <div class="account-balance">R <span id="savingsBalance">0.00</span></div>
+                                    <div class="card-number">•••• •••• 0221</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="summary-cards">
+                            <div class="summary-card income">
+                                <h3>Monthly Income</h3>
+                                <div class="amount" id="monthlyIncome">+ R 0</div>
+                            </div>
+                            <div class="summary-card expense">
+                                <h3>Monthly Expenses</h3>
+                                <div class="amount" id="monthlyExpenses">- R 0</div>
+                            </div>
+                            <div class="summary-card">
+                                <h3>Net Change</h3>
+                                <div class="amount" id="netChange">R 0</div>
+                            </div>
+                        </div>
+
+                        <div class="recent-transactions">
+                            <h3 style="margin-bottom: 20px;">Recent Activity</h3>
+                            <div id="recentTransactionsList">
+                                <div class="no-data">Loading transactions...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transfer Section -->
+                    <div id="transferSection" class="section hidden">
+                        <h2 class="section-title">Transfer Funds</h2>
+                        <div class="transactions-section">
+                            <div class="recent-transactions">
+                                <h3 style="margin-bottom: 20px;">Recent Transfers</h3>
+                                <div id="recentTransfersList">
+                                    <div class="no-data">No recent transfers</div>
+                                </div>
+                            </div>
+                            <div class="transfer-form">
+                                <h3 style="margin-bottom: 20px; text-align: center;">Send Money</h3>
+                                <form id="transferForm">
+                                    <div class="form-group">
+                                        <label for="fromAccount">From Account</label>
+                                        <select id="fromAccount" required>
+                                            <option value="current">Current Account</option>
+                                            <option value="savings">Savings Account</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="payeeAccount">Payee Account No.</label>
+                                        <input type="text" id="payeeAccount" placeholder="Enter account number" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="payeeName">Payee Name</label>
+                                        <input type="text" id="payeeName" placeholder="Enter payee name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="transferAmount">Amount (R)</label>
+                                        <input type="number" id="transferAmount" step="0.01" min="0.01" placeholder="0.00" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="transferMessage">Reference (Optional)</label>
+                                        <textarea id="transferMessage" rows="3" placeholder="Payment reference or note"></textarea>
+                                    </div>
+                                    <button type="submit" class="send-btn">💰 Send Money</button>
+                                </form>
+                                <div id="transferStatus" class="status-message hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions Section -->
+                    <div id="transactionsSection" class="section hidden">
+                        <h2 class="section-title">Transaction History</h2>
+                        <div class="filter-section">
+                            <div class="filter-controls">
+                                <select id="accountFilter">
+                                    <option value="all">All Accounts</option>
+                                    <option value="current">Current Account</option>
+                                    <option value="savings">Savings Account</option>
+                                </select>
+                                <select id="typeFilter">
+                                    <option value="all">All Types</option>
+                                    <option value="sent">Sent</option>
+                                    <option value="received">Received</option>
+                                </select>
+                                <input type="date" id="dateFromFilter">
+                                <input type="date" id="dateToFilter">
+                                <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+                            </div>
+                        </div>
+                        <div class="recent-transactions">
+                            <div id="allTransactionsList">
+                                <div class="no-data">Loading transactions...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Section -->
+                    <div id="notificationsSection" class="section hidden">
+                        <h2 class="section-title">Notifications</h2>
+                        <div class="recent-transactions">
+                            <div id="notificationsList">
+                                <div class="transaction-item">
+                                    <div style="display: flex; align-items: center;">
+                                        <div class="transaction-icon" style="background-color: #e3f2fd; color: #1976d2;">📧</div>
+                                        <div class="transaction-details">
+                                            <div class="transaction-account">Account Statement Available</div>
+                                            <div class="transaction-date">Your monthly statement is ready for download</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="transaction-item">
+                                    <div style="display: flex; align-items: center;">
+                                        <div class="transaction-icon" style="background-color: #fff3e0; color: #f57c00;">⚠️</div>
+                                        <div class="transaction-details">
+                                            <div class="transaction-account">Security Notice</div>
+                                            <div class="transaction-date">Login from new device detected</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIN Modal -->
+    <div id="pinModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Transfer</h3>
+            <div id="transferSummary" class="transfer-summary"></div>
+            <input type="password" id="pinInput" maxlength="4" placeholder="Enter 4-digit PIN">
+            <div class="modal-buttons">
+                <button class="modal-btn confirm" onclick="confirmPin()">Confirm Transfer</button>
+                <button class="modal-btn cancel" onclick="closePinModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="banking-app.js"></script>
+</body>
+</html>
