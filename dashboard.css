@@ -80,6 +80,12 @@
     overflow-y: auto;
 }
 
+/* Dark mode sidebar override */
+[data-theme="dark"] .sidebar {
+    background: #1a1a1a !important;
+    border-right: 1px solid #404040 !important;
+}
+
 .nav-button {
     width: 100%;
     padding: 18px 20px;
@@ -99,6 +105,29 @@
     overflow: hidden;
     text-align: left;
     border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Dark mode navigation buttons - STRONG VISIBILITY */
+[data-theme="dark"] .nav-button {
+    background: #404040 !important;
+    color: #d4af37 !important;
+    border: 2px solid #d4af37 !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="dark"] .nav-button:hover {
+    background: #d4af37 !important;
+    color: #000000 !important;
+    border-color: #f4e4a6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4) !important;
+}
+
+[data-theme="dark"] .nav-button.active {
+    background: #d4af37 !important;
+    color: #000000 !important;
+    border-color: #f4e4a6 !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4) !important;
 }
 
 .nav-button::before {
