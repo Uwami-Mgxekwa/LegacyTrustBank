@@ -476,4 +476,96 @@ function applyFilters() {
     }
     
     if (dateToFilter && dateToFilter.value) {
-        filteredTr
+        filteredTransactions = filteredTransactions.filter(t => {
+            const transactionDate = new Date(t.date);
+            return transactionDate <= new Date(dateToFilter.value);
+        });
+    }
+    
+    const allList = document.getElementById('allTransactionsList');
+    if (!allList) return;
+    
+    if (filteredTransactions.length === 0) {
+        allList.innerHTML = '<div class="no-data">No transactions match your filters</div>';
+        return;
+    }
+    
+    allList.innerHTML = '';
+    filteredTransactions.forEach(transaction => {
+        const transactionElement = createTransactionElement(transaction);
+        allList.appendChild(transactionElement);
+    });
+}
+
+async function refreshData() {
+    if (!currentUser) return;
+    await loadUserData();
+    showMessage('transferStatus', 'Data refreshed successfully', 'success');
+}
+
+// Utility Functions
+function showMessage(elementId, message, type) {
+    const messageElement = document.getElementById(elementId);
+    if (!messageElement) return;
+    
+    messageElement.textContent = message;
+    messageElement.className = `status-message ${type}`;
+    messageElement.classList.remove('hidden');
+    
+    setTimeout(() => {
+        messageElement.classList.add('hidden');
+    }, 5000);
+}
+
+function showLoading() {
+    // Create loading overlay if it doesn't exist
+    let overlay = document.getElementById('loadingOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'loadingOverlay';
+        overlay.className = 'loading-overlay';
+        overlay.innerHTML = `
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading...</div>
+        `;
+        document.body.appendChild(overlay);
+    }
+    overlay.classList.remove('hidden');
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.add('hidden');
+}
+
+function showLoginScreen() {
+    console.log('Showing login screen');
+    const loginScreen = document.getElementById('loginScreen');
+    const bankingInterface = document.getElementById('bankingInterface');
+    
+    if (loginScreen) loginScreen.classList.remove('hidden');
+    if (bankingInterface) bankingInterface.classList.add('hidden');
+    
+    const usernameInput = document.getElementById('username');
+    if (usernameInput) usernameInput.focus();
+}
+
+function showBankingInterface() {
+    console.log('Showing banking interface');
+    const loginScreen = document.getElementById('loginScreen');
+    const bankingInterface = document.getElementById('bankingInterface');
+    
+    if (loginScreen) loginScreen.classList.add('hidden');
+    if (bankingInterface) bankingInterface.classList.remove('hidden');
+    
+    showSection('dashboard');
+}
+
+// Global functions for onclick handlers
+window.signOut = signOut;
+window.refreshData = refreshData;
+window.applyFilters = applyFilters;
+window.confirmPin = confirmPin;
+window.closePinModal = closePinModal;
+
+console.log('Banking app script loaded successfully');
