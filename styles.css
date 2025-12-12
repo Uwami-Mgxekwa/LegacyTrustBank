@@ -1401,6 +1401,111 @@ p {
     font-size: 0.85rem;
 }
 
+/* Mobile Touch Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Touch device optimizations */
+    .btn, .nav-button, .auth-btn {
+        min-height: 44px; /* iOS recommended touch target */
+        padding: 16px 24px;
+    }
+    
+    .nav-link {
+        padding: 12px 8px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .theme-toggle {
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .service-card:hover,
+    .feature-item:hover,
+    .nav-button:hover {
+        transform: none;
+    }
+}
+
+/* Mobile Landscape Optimization */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        min-height: 100vh;
+        padding: 60px 0 30px;
+    }
+    
+    .hero-content {
+        gap: 30px;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .login-content {
+        padding: 20px 15px;
+    }
+    
+    .login-branding {
+        padding: 20px;
+    }
+    
+    .brand-features {
+        margin-bottom: 20px;
+    }
+}
+
+/* Very Small Screens (320px and below) */
+@media (max-width: 320px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .credit-card-svg {
+        width: 220px;
+        height: 138px;
+    }
+    
+    .login-form-container {
+        padding: 20px 15px;
+    }
+    
+    .form-header h2 {
+        font-size: 1.4rem;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo, .app-logo, .demo-logo {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .credit-card-svg {
+        animation: none;
+    }
+}
+
 /* Print Styles */
 @media print {
     .theme-toggle,
