@@ -106,7 +106,7 @@ async function handleLogin(e) {
     
     try {
         // Demo mode authentication - simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 800));
         
         currentUser = {
             id: 'demo-user-' + Date.now(),
@@ -118,7 +118,12 @@ async function handleLogin(e) {
         console.log('Login successful, user:', currentUser);
         
         localStorage.setItem('legacyTrustUser', JSON.stringify(currentUser));
-        await loadUserData();
+        
+        // Load user data without showing loading again
+        console.log('Loading user data...');
+        updateUI();
+        
+        console.log('Showing banking interface...');
         showBankingInterface();
         
     } catch (error) {
