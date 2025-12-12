@@ -343,4 +343,60 @@ async function handleTransfer(e) {
     e.preventDefault();
     
     const fromAccount = document.getElementById('fromAccount').value;
-    const payeeAccount = document.getElementById('payeeAccount
+    const payeeAccount = document.getElementById('payeeAccount').value.trim();
+    const payeeName = document.getElementById('payeeName').value.trim();
+    const amount = parseFloat(document.getElementById('transferAmount').value);
+    const message = document.getElementById('transferMessage').value.trim();
+    
+    if (!payeeAccount || !payeeName || !amount || amount <= 0) {
+        showMessage('transferStatus', 'Please fill in all required fields', 'error');
+        return;
+    }
+    
+    if (amount > userAccounts[fromAccount].balance) {
+        showMessage('transferStatus', 'Insufficient funds', 'error');
+        return;
+    }
+    
+    showPinModal({ fromAccount, payeeAccount, payeeName, amount, message });
+}
+
+function showPinModal(transferDetails) {
+    const modal = document.getElementById('pinModal');
+    const summary = document.getElementById('transferSummary');
+    
+    if (!modal || !summary) return;
+    
+    summary.innerHTML = `
+        <p><strong>From:</strong> ${transferDetails.fromAccount.charAt(0).toUpperCase() + transferDetails.fromAccount.slice(1)} Account</p>
+        <p><strong>To:</strong> ${transferDetails.payeeName}</p>
+        <p><strong>Account:</strong> ${transferDetails.payeeAccount}</p>
+        <p><strong>Amount:</strong> R ${transferDetails.amount.toFixed(2)}</p>
+        ${transferDetails.message ? `<p><strong>Reference:</strong> ${transferDetails.message}</p>` : ''}
+    `;
+    
+    window.pendingTransfer = transferDetails;
+    modal.style.display = 'block';
+    
+    const pinInput = document.getElementById('pinInput');
+    if (pinInput) pinInput.focus();
+}
+
+function closePinModal() {
+    const modal = document.getElementById('pinModal');
+    const pinInput = document.getElementById('pinInput');
+    
+    if (modal) modal.style.display = 'none';
+    if (pinInput) pinInput.value = '';
+    window.pendingTransfer = null;
+}
+
+async function confirmPin() {
+    const pinInput = document.getElementById('pinInput');
+    if (!pinInput) return;
+    
+    const pin = pinInput.value;
+    
+    if (pin !== '1234') {
+        alert('Incorrect PIN. Please try again.');
+        pinInput.value =
