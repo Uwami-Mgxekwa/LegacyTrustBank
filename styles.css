@@ -233,7 +233,7 @@ p {
 
 .signup-btn {
     background: transparent;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     border: 2px solid var(--accent-gold);
 }
 
