@@ -89,17 +89,59 @@
                                 </linearGradient>
                                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#f4e4a6;
-                                <div class="demo-account">
-                                    <span>Current Account</span>
-                                    <span>R 4,780.00</span>
-                                </div>
-                                <div class="demo-account">
-                                    <span>Savings Account</span>
-                                    <span>R 73,500.00</span>
-                                </div>
-                            </div>
-                        </div>
+                                    <stop offset="100%" style="stop-color:#f4e4a6;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge> 
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            
+                            <!-- Card Base -->
+                            <rect x="0" y="0" width="400" height="250" rx="20" ry="20" fill="url(#cardGradient)" stroke="url(#goldGradient)" stroke-width="2"/>
+                            
+                            <!-- Decorative Pattern -->
+                            <circle cx="350" cy="50" r="80" fill="none" stroke="url(#goldGradient)" stroke-width="1" opacity="0.3"/>
+                            <circle cx="320" cy="80" r="40" fill="none" stroke="url(#goldGradient)" stroke-width="1" opacity="0.2"/>
+                            
+                            <!-- Bank Logo -->
+                            <rect x="30" y="30" width="50" height="50" rx="10" ry="10" fill="url(#goldGradient)"/>
+                            <text x="55" y="60" font-family="Inter, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#000">LTB</text>
+                            
+                            <!-- Bank Name -->
+                            <text x="100" y="50" font-family="Inter, sans-serif" font-size="16" font-weight="600" fill="#ffffff">Legacy Trust Bank</text>
+                            <text x="100" y="70" font-family="Inter, sans-serif" font-size="12" fill="#cccccc">Premium Banking</text>
+                            
+                            <!-- Chip -->
+                            <rect x="50" y="120" width="40" height="30" rx="5" ry="5" fill="url(#goldGradient)" filter="url(#glow)"/>
+                            <rect x="55" y="125" width="30" height="20" rx="3" ry="3" fill="none" stroke="#000" stroke-width="1"/>
+                            
+                            <!-- Card Number -->
+                            <text x="120" y="140" font-family="Courier New, monospace" font-size="18" font-weight="bold" fill="#ffffff" letter-spacing="3px">•••• •••• •••• 1234</text>
+                            
+                            <!-- Cardholder Name -->
+                            <text x="50" y="180" font-family="Inter, sans-serif" font-size="10" fill="#cccccc">CARDHOLDER NAME</text>
+                            <text x="50" y="200" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#ffffff">JOHN SMITH</text>
+                            
+                            <!-- Expiry Date -->
+                            <text x="250" y="180" font-family="Inter, sans-serif" font-size="10" fill="#cccccc">VALID THRU</text>
+                            <text x="250" y="200" font-family="Courier New, monospace" font-size="14" font-weight="600" fill="#ffffff">12/28</text>
+                            
+                            <!-- Contactless Symbol -->
+                            <g transform="translate(320, 120)">
+                                <path d="M0,0 Q10,0 10,10 Q10,20 0,20" fill="none" stroke="url(#goldGradient)" stroke-width="2" opacity="0.8"/>
+                                <path d="M5,5 Q10,5 10,10 Q10,15 5,15" fill="none" stroke="url(#goldGradient)" stroke-width="2" opacity="0.8"/>
+                                <path d="M10,10 Q12,10 12,10" fill="none" stroke="url(#goldGradient)" stroke-width="2" opacity="0.8"/>
+                            </g>
+                            
+                            <!-- Mastercard Logo Placeholder -->
+                            <circle cx="340" cy="190" r="15" fill="#ff5f00" opacity="0.8"/>
+                            <circle cx="355" cy="190" r="15" fill="#eb001b" opacity="0.8"/>
+                            <circle cx="347.5" cy="190" r="15" fill="#f79e1b" opacity="0.6"/>
+                        </svg>
                     </div>
                 </div>
             </div>
