@@ -74,8 +74,8 @@
 
 /* Sidebar */
 .sidebar {
-    background: var(--bg-secondary);
-    border-right: var(--border-light);
+    background: #ffffff !important;
+    border-right: 1px solid #e9ecef !important;
     padding: 30px 20px;
     overflow-y: auto;
 }
@@ -92,8 +92,8 @@
     margin-bottom: 12px;
     border: none;
     border-radius: var(--radius-md);
-    background: rgba(212, 175, 55, 0.1);
-    color: var(--text-primary);
+    background: #f8f9fa !important;
+    color: #000000 !important;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -104,7 +104,33 @@
     position: relative;
     overflow: hidden;
     text-align: left;
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    border: 2px solid #d4af37 !important;
+}
+
+/* Light mode navigation buttons - STRONG VISIBILITY */
+[data-theme="light"] .nav-button,
+:root .nav-button {
+    background: #f8f9fa !important;
+    color: #000000 !important;
+    border: 2px solid #d4af37 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .nav-button:hover,
+:root .nav-button:hover {
+    background: #d4af37 !important;
+    color: #000000 !important;
+    border-color: #f4e4a6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4) !important;
+}
+
+[data-theme="light"] .nav-button.active,
+:root .nav-button.active {
+    background: #d4af37 !important;
+    color: #000000 !important;
+    border-color: #f4e4a6 !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4) !important;
 }
 
 /* Dark mode navigation buttons - STRONG VISIBILITY */
