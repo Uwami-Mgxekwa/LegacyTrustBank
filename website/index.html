@@ -3,71 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legacy Trust Bank</title>
+    <title>Legacy Trust Bank - Your Trusted Financial Partner</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏦</text></svg>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <h1>Legacy Trust Bank</h1>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo">LTB</div>
+                <div class="logo-text">
+                    <div class="bank-title">Legacy Trust Bank</div>
+                    <div class="tagline">Your Trusted Financial Partner</div>
+                </div>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="../index.html" class="nav-link login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Online Banking
+                </a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-    <section class="hero">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background"></div>
         <div class="container">
-            <h2>Your Trusted Partner for a Lifetime of Financial Success</h2>
-            <p>At Legacy Trust Bank, we believe in building long-lasting relationships with our clients. We are committed to providing you with the highest quality financial products and services, tailored to your individual needs.</p>
-            <a href="#" class="btn">Learn More</a>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">Your Trusted Partner for a Lifetime of Financial Success</h1>
+                    <p class="hero-description">At Legacy Trust Bank, we believe in building long-lasting relationships with our clients. Experience modern banking with cutting-edge technology and personalized service.</p>
+                    <div class="hero-buttons">
+                        <a href="../index.html" class="btn btn-primary">
+                            <i class="fas fa-laptop"></i> Start Banking Online
+                        </a>
+                        <a href="#services" class="btn btn-secondary">
+                            <i class="fas fa-info-circle"></i> Learn More
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">50K+</div>
+                            <div class="stat-label">Happy Customers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">R2.5B+</div>
+                            <div class="stat-label">Assets Under Management</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Years of Excellence</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card">
+                        <div class="card-demo">
+                            <div class="demo-header">
+                                <div class="demo-logo">LTB</div>
+                                <div class="demo-title">Legacy Trust Bank</div>
+                            </div>
+                            <div class="demo-balance">
+                                <div class="balance-label">Total Balance</div>
+                                <div class="balance-amount">R 78,280.00</div>
+                            </div>
+                            <div class="demo-accounts">
+                                <div class="demo-account">
+                                    <span>Current Account</span>
+                                    <span>R 4,780.00</span>
+                                </div>
+                                <div class="demo-account">
+                                    <span>Savings Account</span>
+                                    <span>R 73,500.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Banking Services</h2>
+                <p class="section-subtitle">Comprehensive financial solutions designed for your success</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Digital Banking</h3>
+                    <p>Modern online banking platform with real-time transactions, account management, and secure transfers.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> 24/7 Online Access</li>
+                        <li><i class="fas fa-check"></i> Instant Transfers</li>
+                        <li><i class="fas fa-check"></i> Mobile Banking</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h3>Savings & Current Accounts</h3>
+                    <p>Flexible account options with competitive interest rates and no hidden fees.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> High Interest Rates</li>
+                        <li><i class="fas fa-check"></i> No Monthly Fees</li>
+                        <li><i class="fas fa-check"></i> Free Debit Cards</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Loans & Mortgages</h3>
+                    <p>Competitive rates and flexible terms for personal loans, home loans, and business financing.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Low Interest Rates</li>
+                        <li><i class="fas fa-check"></i> Quick Approval</li>
+                        <li><i class="fas fa-check"></i> Flexible Terms</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Investment Services</h3>
+                    <p>Grow your wealth with expert guidance and diversified investment portfolios.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Expert Advice</li>
+                        <li><i class="fas fa-check"></i> Diversified Portfolios</li>
+                        <li><i class="fas fa-check"></i> Risk Management</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Security & Insurance</h3>
+                    <p>Advanced security measures and comprehensive insurance products to protect your assets.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Bank-Grade Security</li>
+                        <li><i class="fas fa-check"></i> Fraud Protection</li>
+                        <li><i class="fas fa-check"></i> Insurance Products</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Customer Support</h3>
+                    <p>Round-the-clock customer service with dedicated relationship managers for personalized assistance.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> 24/7 Support</li>
+                        <li><i class="fas fa-check"></i> Personal Managers</li>
+                        <li><i class="fas fa-check"></i> Multi-Channel Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
     <section class="features">
         <div class="container">
-            <h2>What We Offer</h2>
-            <div class="feature-box">
-                <h3>Checking & Savings</h3>
-                <p>Convenient and secure banking solutions.</p>
-            </div>
-            <div class="feature-box">
-                <h3>Loans & Mortgages</h3>
-                <p>Competitive rates and flexible terms.</p>
-            </div>
-            <div class="feature-box">
-                <h3>Investment Services</h3>
-                <p>Grow your wealth with expert guidance.</p>
-            </div>
-            <div class="feature-box">
-                <h3>Credit Cards</h3>
-                <p>Rewards and benefits to suit your lifestyle.</p>
+            <div class="features-content">
+                <div class="features-text">
+                    <h2>Why Choose Legacy Trust Bank?</h2>
+                    <p>Experience banking that puts you first with innovative technology and personalized service.</p>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Award-Winning Service</h4>
+                                <p>Recognized for excellence in customer service and innovation</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Bank-Grade Security</h4>
+                                <p>Advanced encryption and multi-factor authentication</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Mobile-First Design</h4>
+                                <p>Seamless experience across all devices</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Personal Relationship Managers</h4>
+                                <p>Dedicated support for all your banking needs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="features-image">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="app-interface">
+                                <div class="app-header">
+                                    <div class="app-logo">LTB</div>
+                                    <div class="app-title">Legacy Trust Bank</div>
+                                </div>
+                                <div class="app-balance">R 78,280.00</div>
+                                <div class="app-actions">
+                                    <div class="action-btn">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <span>Transfer</span>
+                                    </div>
+                                    <div class="action-btn">
+                                        <i class="fas fa-history"></i>
+                                        <span>History</span>
+                                    </div>
+                                    <div class="action-btn">
+                                        <i class="fas fa-bell"></i>
+                                        <span>Alerts</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="about">
+    <!-- About Section -->
+    <section id="about" class="about">
         <div class="container">
-            <h2>Why Choose Legacy Trust Bank?</h2>
-            <ul>
-                <li>Highest quality financial products and services</li>
-                <li>Long-lasting client relationships</li>
-                <li>Commitment to helping you achieve your financial goals</li>
-            </ul>
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Legacy Trust Bank</h2>
+                    <p>Founded with a vision to revolutionize banking, Legacy Trust Bank has been serving customers for over 15 years with innovative financial solutions and exceptional service.</p>
+                    <div class="about-stats">
+                        <div class="about-stat">
+                            <h3>50,000+</h3>
+                            <p>Satisfied Customers</p>
+                        </div>
+                        <div class="about-stat">
+                            <h3>R2.5B+</h3>
+                            <p>Assets Managed</p>
+                        </div>
+                        <div class="about-stat">
+                            <h3>99.9%</h3>
+                            <p>Uptime Guarantee</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="about-card">
+                        <h4>Our Mission</h4>
+                        <p>To provide innovative, secure, and accessible banking solutions that empower our customers to achieve their financial goals.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
         <div class="container">
-            <p>&copy; 2023 Legacy Trust Bank. All rights reserved.</p>
-            <ul class="social-media">
-                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-            </ul>
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Ready to start your banking journey with us?</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Visit Us</h4>
+                            <p>123 Financial District<br>Cape Town, South Africa</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Call Us</h4>
+                            <p>+27 21 123 4567<br>Available 24/7</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email Us</h4>
+                            <p>info@legacytrustbank.co.za<br>support@legacytrustbank.co.za</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-cta">
+                    <div class="cta-card">
+                        <h3>Ready to Get Started?</h3>
+                        <p>Join thousands of satisfied customers and experience modern banking today.</p>
+                        <a href="../index.html" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> Open Account Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo">LTB</div>
+                        <div class="logo-text">
+                            <div class="bank-title">Legacy Trust Bank</div>
+                            <div class="tagline">Your Trusted Financial Partner</div>
+                        </div>
+                    </div>
+                    <p>Building lasting relationships through innovative banking solutions and exceptional customer service.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Online Banking</a></li>
+                        <li><a href="#services">Savings Accounts</a></li>
+                        <li><a href="#services">Loans & Mortgages</a></li>
+                        <li><a href="#services">Investment Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Legacy Trust Bank. All rights reserved. | Licensed Financial Services Provider</p>
+            </div>
         </div>
     </footer>
 
