@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeLoginPage() {
-    setupFormHandlers();
-    setupPasswordStrength();
+    setupLoginForm();
     checkURLParams();
     setupFormValidation();
 }
