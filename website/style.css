@@ -1806,36 +1806,72 @@ body {
 }
 
 @media (max-width: 480px) {
-    .summary-cards {
-        grid-template-columns: 1fr;
+    .hero-title {
+        font-size: 1.8rem;
     }
     
-    .account-balance {
-        font-size: 28px;
+    .stat-number {
+        font-size: 2rem;
     }
     
-    .sidebar {
-        grid-template-columns: 1fr;
+    .section-title {
+        font-size: 1.8rem;
     }
     
-    .login-form {
-        padding: 30px;
-        margin: 20px;
+    .hero-card {
+        padding: 25px;
     }
     
-    .modal-content {
-        margin: 20% auto;
+    .card-demo {
+        width: 250px;
+    }
+    
+    .balance-amount {
+        font-size: 2rem;
+    }
+    
+    .phone-mockup {
+        width: 200px;
+        height: 400px;
+    }
+    
+    .app-balance {
+        font-size: 2rem;
+    }
+    
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .cta-card {
         padding: 30px 20px;
     }
-    
-    .modal-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .modal-btn {
-        width: 100%;
-    }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 10px; }
+.mb-2 { margin-bottom: 20px; }
+.mb-3 { margin-bottom: 30px; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 20px; }
+.mt-3 { margin-top: 30px; }
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-padding-top: 80px;
 }
 
 /* Animations */
