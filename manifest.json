@@ -1,0 +1,99 @@
+{
+  "name": "Legacy Trust Bank",
+  "short_name": "LTB",
+  "description": "Your Trusted Financial Partner - Premium Digital Banking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["finance", "business"],
+  "icons": [
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "72x72",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "96x96",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "128x128",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "144x144",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "152x152",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "384x384",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Login",
+      "short_name": "Login",
+      "description": "Sign in to your account",
+      "url": "/login.html",
+      "icons": [
+        {
+          "src": "assets/logo.jpeg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "name": "Sign Up",
+      "short_name": "Sign Up",
+      "description": "Create new account",
+      "url": "/signup.html",
+      "icons": [
+        {
+          "src": "assets/logo.jpeg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/logo.jpeg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ]
+}
