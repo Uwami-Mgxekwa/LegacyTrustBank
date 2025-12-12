@@ -26,50 +26,10 @@ function checkURLParams() {
     }
 }
 
-// Form switching functions
-function switchToSignup() {
+// Setup login form handler
+function setupLoginForm() {
     const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    const formTitle = document.getElementById('formTitle');
-    const formSubtitle = document.getElementById('formSubtitle');
-    
-    loginForm.classList.add('hidden');
-    signupForm.classList.remove('hidden');
-    
-    formTitle.textContent = 'Create Account';
-    formSubtitle.textContent = 'Join Legacy Trust Bank today';
-    
-    // Update URL without page reload
-    const url = new URL(window.location);
-    url.searchParams.set('signup', 'true');
-    window.history.pushState({}, '', url);
-}
-
-function switchToLogin() {
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    const formTitle = document.getElementById('formTitle');
-    const formSubtitle = document.getElementById('formSubtitle');
-    
-    signupForm.classList.add('hidden');
-    loginForm.classList.remove('hidden');
-    
-    formTitle.textContent = 'Welcome Back';
-    formSubtitle.textContent = 'Sign in to access your account';
-    
-    // Update URL without page reload
-    const url = new URL(window.location);
-    url.searchParams.delete('signup');
-    window.history.pushState({}, '', url);
-}
-
-// Setup form handlers
-function setupFormHandlers() {
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    
     loginForm.addEventListener('submit', handleLogin);
-    signupForm.addEventListener('submit', handleSignup);
 }
 
 // Handle login form submission
