@@ -31,6 +31,7 @@
     background: var(--gradient-gold);
     border-radius: var(--radius-md);
     display: flex;
+    align-items: center;
     justify-content: center;
     color: var(--text-inverse);
     font-size: 20px;
@@ -85,8 +86,8 @@
     margin-bottom: 12px;
     border: none;
     border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--text-secondary);
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--text-primary);
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -97,6 +98,7 @@
     position: relative;
     overflow: hidden;
     text-align: left;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .nav-button::before {
@@ -119,12 +121,14 @@
     color: var(--text-inverse);
     transform: translateY(-2px);
     box-shadow: var(--shadow-gold);
+    border-color: var(--accent-gold);
 }
 
 .nav-button.active {
     background: var(--gradient-gold);
     color: var(--text-inverse);
     box-shadow: var(--shadow-gold);
+    border-color: var(--accent-gold);
 }
 
 .sign-out-btn {
@@ -630,6 +634,7 @@
     position: relative;
     overflow: hidden;
 }
+
 
 .login-btn::before {
     content: '';
