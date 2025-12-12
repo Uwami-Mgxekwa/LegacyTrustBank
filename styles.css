@@ -172,7 +172,7 @@ p {
 .logo-text .bank-title {
     font-size: 20px;
     font-weight: bold;
-    color: var(--text-primary);
+    color: #000000 !important;
     background: var(--gradient-gold);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -181,7 +181,7 @@ p {
 
 .logo-text .tagline {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #000000 !important;
     font-weight: 500;
 }
 
