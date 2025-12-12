@@ -149,22 +149,24 @@ function signOut() {
 }
 
 // Data Loading
-async function loadUserData() {
+async function loadUserData(showLoadingOverlay = true) {
     if (!currentUser) return;
     
     try {
         console.log('Loading user data for:', currentUser.username);
-        showLoading();
+        if (showLoadingOverlay) showLoading();
         
-        // Simulate loading delay
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Simulate loading delay only if showing overlay
+        if (showLoadingOverlay) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
         
         updateUI();
         console.log('User data loaded successfully');
     } catch (error) {
         console.error('Error loading user data:', error);
     } finally {
-        hideLoading();
+        if (showLoadingOverlay) hideLoading();
     }
 }
 
