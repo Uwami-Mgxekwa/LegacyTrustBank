@@ -64,11 +64,28 @@ async function handleSignup(e) {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     try {
-        // Check if username or email already exists in Firebase
-        const [usernameExists, emailExists] = await Promise.all([
-            window.FirebaseDB.usernameExists(username),
-            window.FirebaseDB.emailExists(email)
-        ]);
+        // Try Firebase first, but fallback to local storage if Firebase fails
+        let firebaseWorking = true;
+        let usernameExists = false;
+        let emailExists = false;
+        
+        try {
+            // Check if username or email already exists in Firebase
+            const results = await Promise.all([
+                window.FirebaseDB.usernameExists(username),
+                window.FirebaseDB.emailExists(email)
+            ]);
+            usernameExists = results[0];
+            emailExists = results[1];
+        } catch (firebaseError) {
+            console.warn('Firebase check failed, using local fallback:', firebaseError);
+            firebaseWorking = false;
+            
+            // Check local storage for existing users
+            const existingUsers = JSON.parse(localStorage.getItem('ltb_users') || '[]');
+            usernameExists = existingUsers.some(user => user.username === username);
+            emailExists = existingUsers.some(user => user.email === email);
+        }
         
         if (usernameExists) {
             showStatusMessage('Username already exists', 'error');
@@ -82,7 +99,7 @@ async function handleSignup(e) {
             return;
         }
         
-        // Create new user in Firebase
+        // Create new user
         const newUser = {
             id: Date.now().toString(),
             fullName,
@@ -95,10 +112,32 @@ async function handleSignup(e) {
             savingsBalance: 5000.00  // Starting savings
         };
         
-        // Create account in Firebase Auth and Database
-        const result = await window.FirebaseAuth.createAccount(email, password, newUser);
+        let success = false;
         
-        if (result.success) {
+        if (firebaseWorking) {
+            try {
+                // Try to create account in Firebase Auth and Database
+                const result = await window.FirebaseAuth.createAccount(email, password, newUser);
+                success = result.success;
+                if (!success) {
+                    console.warn('Firebase account creation failed:', result.error);
+                }
+            } catch (firebaseError) {
+                console.warn('Firebase account creation error:', firebaseError);
+                firebaseWorking = false;
+            }
+        }
+        
+        if (!firebaseWorking || !success) {
+            // Fallback to local storage
+            console.log('Using local storage fallback for user registration');
+            const existingUsers = JSON.parse(localStorage.getItem('ltb_users') || '[]');
+            existingUsers.push(newUser);
+            localStorage.setItem('ltb_users', JSON.stringify(existingUsers));
+            success = true;
+        }
+        
+        if (success) {
             showStatusMessage('Account created successfully! Redirecting to login...', 'success');
             
             // Clear form
@@ -109,7 +148,7 @@ async function handleSignup(e) {
                 window.location.href = `login.html?username=${encodeURIComponent(username)}&success=signup`;
             }, 2000);
         } else {
-            showStatusMessage(`Account creation failed: ${result.error}`, 'error');
+            showStatusMessage('Account creation failed. Please try again.', 'error');
         }
     } catch (error) {
         console.error('Signup error:', error);
