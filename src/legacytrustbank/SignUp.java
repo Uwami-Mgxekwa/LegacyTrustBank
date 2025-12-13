@@ -24,9 +24,9 @@ public class SignUp extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         userName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        Email = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         Password = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        Email = new javax.swing.JTextField();
         box = new javax.swing.JCheckBox();
         displayP = new javax.swing.JLabel();
         displayE = new javax.swing.JLabel();
@@ -54,13 +54,13 @@ public class SignUp extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Password : ");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 240, -1, -1));
-        getContentPane().add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 270, 204, -1));
+        getContentPane().add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 270, 204, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Email :");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, -1, -1));
-        getContentPane().add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 180, 204, -1));
+        getContentPane().add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 180, 204, -1));
 
         box.setForeground(new java.awt.Color(0, 0, 0));
         box.setText("I agree to the Terms & Conditions");
@@ -107,8 +107,8 @@ public class SignUp extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username = userName.getText().trim();
-        String email = Email.getText().trim();
-        String password = Password.getText().trim();
+        String email = Password.getText().trim();
+        String password = Email.getText().trim();
         boolean hasError = false;
 
         // Clear previous messages
@@ -162,8 +162,8 @@ public class SignUp extends javax.swing.JFrame {
 
                         // Clear form
                         userName.setText("");
-                        Email.setText("");
                         Password.setText("");
+                        Email.setText("");
                         box.setSelected(false);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error creating account. Please try again.");
