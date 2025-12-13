@@ -105,19 +105,45 @@ async function handleLogin(e) {
     showLoading();
     
     try {
-        // Demo mode authentication - simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-        
-        currentUser = {
-            id: 'demo-user-' + Date.now(),
-            username: username,
-            fullName: username.charAt(0).toUpperCase() + username.slice(1),
-            email: username + '@demo.com'
-        };
-        
-        console.log('Login successful, user:', currentUser);
-        
-        localStorage.setItem('legacyTrustUser', JSON.stringify(currentUser));
+        // Check if this is demo login
+        if (username === 'demo' && password === 'demo') {
+            // Demo mode authentication - simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            currentUser = {
+                id: 'demo-user-' + Date.now(),
+                username: username,
+                fullName: 'Demo User',
+                email: 'demo@legacytrustbank.com',
+                accountType: 'demo'
+            };
+            
+            console.log('Demo login successful, user:', currentUser);
+            localStorage.setItem('ltb_user', JSON.stringify(currentUser));
+        } else {
+            // Try Firebase authentication for real users
+            const result = await window.FirebaseAuth.signIn(username, password);
+            if (result.success) {
+                // Get user data from Firebase
+                const userData = await window.FirebaseDB.findUserByUsername(username);
+                if (userData) {
+                    currentUser = {
+                        id: userData.id,
+                        username: userData.profile.username,
+                        fullName: userData.profile.fullName,
+                        email: userData.profile.email,
+                        accountType: 'firebase',
+                        loginTime: new Date().toISOString()
+                    };
+                    localStorage.setItem('ltb_user', JSON.stringify(currentUser));
+                    console.log('Firebase login successful, user:', currentUser);
+                } else {
+                    throw new Error('User data not found');
+                }
+            } else {
+                throw new Error(result.error || 'Invalid credentials');
+            }
+        }
         
         // Load user data without showing loading again
         console.log('Loading user data...');
@@ -172,9 +198,16 @@ async function loadUserData(showLoadingOverlay = true) {
 
 // UI Updates
 function updateUI() {
+    console.log('🔄 Updating UI for user:', currentUser);
     updateAccountBalances();
     loadRecentTransactions();
-    updateSummaryCards();
+    
+    // Only call updateSummaryCards for demo users
+    // Firebase users will have their summary updated by Firebase listeners
+    if (currentUser && currentUser.accountType === 'demo') {
+        updateSummaryCards();
+    }
+    
     updateUserGreeting();
 }
 

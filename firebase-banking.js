@@ -14,18 +14,27 @@ function initializeFirebaseBanking() {
     if (savedUser) {
         try {
             const userData = JSON.parse(savedUser);
+            console.log('🔥 Found user data:', userData);
             
-            // Only setup Firebase listeners for non-demo users
-            if (userData.id && userData.accountType !== 'demo') {
+            // Only setup Firebase listeners for Firebase users
+            if (userData.id && userData.accountType === 'firebase') {
+                console.log('🔥 Firebase user detected, setting up listeners');
                 setupFirebaseListeners(userData.id);
             } else if (userData.accountType === 'demo') {
-                console.log('🔥 Demo user detected, skipping Firebase listeners');
+                console.log('🔥 Demo user detected, initializing demo data');
                 // Initialize demo data
-                initializeDemoData();
+                setTimeout(initializeDemoData, 100); // Small delay to ensure DOM is ready
+            } else {
+                console.log('🔥 Unknown user type, initializing demo data as fallback');
+                setTimeout(initializeDemoData, 100);
             }
         } catch (error) {
-            console.error('Error parsing saved user:', error);
+            console.error('❌ Error parsing saved user:', error);
+            // Fallback to demo data
+            setTimeout(initializeDemoData, 100);
         }
+    } else {
+        console.log('🔥 No saved user found');
     }
 }
 
@@ -214,12 +223,15 @@ function updateTransactionsUI(transactions) {
 
 // Update summary cards with calculated data
 function updateFirebaseSummaryCards(userData) {
-    if (!userData || !userData.transactions) {
-        // Set default values if no transactions
-        const monthlyIncomeElement = document.getElementById('monthlyIncome');
-        const monthlyExpensesElement = document.getElementById('monthlyExpenses');
-        const netChangeElement = document.getElementById('netChange');
-        
+    console.log('🔥 Updating summary cards with data:', userData);
+    
+    // Set default values first
+    const monthlyIncomeElement = document.getElementById('monthlyIncome');
+    const monthlyExpensesElement = document.getElementById('monthlyExpenses');
+    const netChangeElement = document.getElementById('netChange');
+    
+    if (!userData || !userData.transactions || Object.keys(userData.transactions).length === 0) {
+        console.log('🔥 No transactions found, setting default values');
         if (monthlyIncomeElement) monthlyIncomeElement.textContent = '+ R 0.00';
         if (monthlyExpensesElement) monthlyExpensesElement.textContent = '- R 0.00';
         if (netChangeElement) {
@@ -229,43 +241,54 @@ function updateFirebaseSummaryCards(userData) {
         return;
     }
     
-    const transactions = Object.values(userData.transactions);
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    
-    // Calculate monthly income and expenses
-    let monthlyIncome = 0;
-    let monthlyExpenses = 0;
-    
-    transactions.forEach(transaction => {
-        const transactionDate = new Date(transaction.timestamp);
-        if (transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear) {
-            if (transaction.amount > 0) {
-                monthlyIncome += transaction.amount;
-            } else {
-                monthlyExpenses += Math.abs(transaction.amount);
+    try {
+        const transactions = Object.values(userData.transactions);
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        
+        // Calculate monthly income and expenses
+        let monthlyIncome = 0;
+        let monthlyExpenses = 0;
+        
+        transactions.forEach(transaction => {
+            if (transaction && transaction.timestamp && transaction.amount !== undefined) {
+                const transactionDate = new Date(transaction.timestamp);
+                if (transactionDate.getMonth() === currentMonth && transactionDate.getFullYear() === currentYear) {
+                    if (transaction.amount > 0) {
+                        monthlyIncome += transaction.amount;
+                    } else {
+                        monthlyExpenses += Math.abs(transaction.amount);
+                    }
+                }
             }
+        });
+        
+        const netChange = monthlyIncome - monthlyExpenses;
+        
+        // Update UI elements
+        if (monthlyIncomeElement) {
+            monthlyIncomeElement.textContent = `+ R ${monthlyIncome.toFixed(2)}`;
         }
-    });
-    
-    const netChange = monthlyIncome - monthlyExpenses;
-    
-    // Update UI elements
-    const monthlyIncomeElement = document.getElementById('monthlyIncome');
-    const monthlyExpensesElement = document.getElementById('monthlyExpenses');
-    const netChangeElement = document.getElementById('netChange');
-    
-    if (monthlyIncomeElement) {
-        monthlyIncomeElement.textContent = `+ R ${monthlyIncome.toFixed(2)}`;
-    }
-    
-    if (monthlyExpensesElement) {
-        monthlyExpensesElement.textContent = `- R ${monthlyExpenses.toFixed(2)}`;
-    }
-    
-    if (netChangeElement) {
-        netChangeElement.textContent = `${netChange >= 0 ? '+' : ''}R ${netChange.toFixed(2)}`;
-        netChangeElement.style.color = netChange >= 0 ? '#28a745' : '#dc3545';
+        
+        if (monthlyExpensesElement) {
+            monthlyExpensesElement.textContent = `- R ${monthlyExpenses.toFixed(2)}`;
+        }
+        
+        if (netChangeElement) {
+            netChangeElement.textContent = `${netChange >= 0 ? '+' : ''}R ${netChange.toFixed(2)}`;
+            netChangeElement.style.color = netChange >= 0 ? '#28a745' : '#dc3545';
+        }
+        
+        console.log('✅ Summary cards updated successfully');
+    } catch (error) {
+        console.error('❌ Error updating summary cards:', error);
+        // Fallback to default values
+        if (monthlyIncomeElement) monthlyIncomeElement.textContent = '+ R 0.00';
+        if (monthlyExpensesElement) monthlyExpensesElement.textContent = '- R 0.00';
+        if (netChangeElement) {
+            netChangeElement.textContent = 'R 0.00';
+            netChangeElement.style.color = '#28a745';
+        }
     }
 }
 
