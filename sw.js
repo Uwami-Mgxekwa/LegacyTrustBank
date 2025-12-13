@@ -1,59 +1,46 @@
-// Service Worker for Legacy Trust Bank PWA
-const CACHE_NAME = 'ltb-v1.0.0';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/login.html',
-  '/signup.html',
-  '/dashboard.html',
-  '/styles.css',
-  '/login.css',
-  '/dashboard.css',
-  '/script.js',
-  '/login.js',
-  '/signup.js',
-  '/banking-app.js',
-  '/theme.js',
-  '/assets/logo.jpeg',
-  '/assets/hero-video.mp4',
-  '/manifest.json'
-];
+// Service Worker for Legacy Trust Bank PWA - DEVELOPMENT MODE
+// This service worker clears all caches to prevent development issues
 
-// Install event - cache resources
+// Clear all caches immediately
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
-
-// Fetch event - serve from cache when offline
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
-      }
-    )
-  );
-});
-
-// Activate event - clean up old caches
-self.addEventListener('activate', function(event) {
+  console.log('SW: Clearing all caches for development');
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
+          console.log('SW: Deleting cache:', cacheName);
+          return caches.delete(cacheName);
         })
       );
     })
   );
+  self.skipWaiting();
 });
+
+// Always fetch from network (no caching during development)
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    fetch(event.request.clone()).catch(function() {
+      // Only use cache as absolute fallback
+      return caches.match(event.request);
+    })
+  );
+});
+
+// Activate immediately and clear all caches
+self.addEventListener('activate', function(event) {
+  console.log('SW: Activating and clearing all caches');
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          console.log('SW: Deleting cache:', cacheName);
+          return caches.delete(cacheName);
+        })
+      );
+    })
+  );
+  return self.clients.claim();
+});
+
+console.log('SW: Development mode - caching disabled');
