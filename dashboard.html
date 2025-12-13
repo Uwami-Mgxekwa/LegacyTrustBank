@@ -25,26 +25,13 @@
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
         <i class="fas fa-moon" id="themeIcon"></i>
     </button>
-    <!-- Login Screen -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-form">
-            <div class="login-logo">
-                <div class="logo">LTB</div>
-                <div class="bank-title">Legacy Trust Bank</div>
-            </div>
-            <h2 class="login-title">Welcome Back</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter any username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter any password" required>
-                </div>
-                <button type="submit" class="login-btn">Sign In</button>
-            </form>
-            <div id="loginMessage" class="status-message hidden"></div>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo">LTB</div>
+            <h2>Legacy Trust Bank</h2>
+            <div class="loading-spinner"></div>
+            <p>Loading your dashboard...</p>
         </div>
     </div>
 

@@ -11,7 +11,7 @@ function initializeSignupPage() {
     setupSignupForm();
     setupPasswordStrength();
     setupFormValidation();
-    checkExistingSession();
+    // Don't check existing session on signup page - allow new account creation
     console.log('Signup page initialization complete');
 }
 

@@ -27,7 +27,7 @@ async function initializeApp() {
         setupEventListeners();
         
         // Check for saved session
-        const savedUser = localStorage.getItem('legacyTrustUser');
+        const savedUser = localStorage.getItem('ltb_user') || sessionStorage.getItem('ltb_user');
         if (savedUser) {
             try {
                 currentUser = JSON.parse(savedUser);
@@ -550,15 +550,9 @@ function hideLoading() {
 }
 
 function showLoginScreen() {
-    console.log('Showing login screen');
-    const loginScreen = document.getElementById('loginScreen');
-    const bankingInterface = document.getElementById('bankingInterface');
-    
-    if (loginScreen) loginScreen.classList.remove('hidden');
-    if (bankingInterface) bankingInterface.classList.add('hidden');
-    
-    const usernameInput = document.getElementById('username');
-    if (usernameInput) usernameInput.focus();
+    console.log('No session found, redirecting to login page...');
+    // Redirect to login page instead of showing embedded login
+    window.location.href = 'login.html';
 }
 
 function showBankingInterface() {
