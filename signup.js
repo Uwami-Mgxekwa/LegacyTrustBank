@@ -63,46 +63,58 @@ async function handleSignup(e) {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // Check if username or email already exists
-    const users = JSON.parse(localStorage.getItem('ltb_users') || '[]');
-    
-    if (users.find(u => u.username === username)) {
-        showStatusMessage('Username already exists', 'error');
-        showLoading(false);
-        return;
+    try {
+        // Check if username or email already exists in Firebase
+        const [usernameExists, emailExists] = await Promise.all([
+            window.FirebaseDB.usernameExists(username),
+            window.FirebaseDB.emailExists(email)
+        ]);
+        
+        if (usernameExists) {
+            showStatusMessage('Username already exists', 'error');
+            showLoading(false);
+            return;
+        }
+        
+        if (emailExists) {
+            showStatusMessage('Email already registered', 'error');
+            showLoading(false);
+            return;
+        }
+        
+        // Create new user in Firebase
+        const newUser = {
+            id: Date.now().toString(),
+            fullName,
+            email,
+            username,
+            password, // In real app, this would be hashed
+            createdAt: new Date().toISOString(),
+            accountNumber: generateAccountNumber(),
+            currentBalance: 1000.00, // Starting balance
+            savingsBalance: 5000.00  // Starting savings
+        };
+        
+        // Create account in Firebase Auth and Database
+        const result = await window.FirebaseAuth.createAccount(email, password, newUser);
+        
+        if (result.success) {
+            showStatusMessage('Account created successfully! Redirecting to login...', 'success');
+            
+            // Clear form
+            document.getElementById('signupForm').reset();
+            
+            // Redirect to login page after delay
+            setTimeout(() => {
+                window.location.href = `login.html?username=${encodeURIComponent(username)}&success=signup`;
+            }, 2000);
+        } else {
+            showStatusMessage(`Account creation failed: ${result.error}`, 'error');
+        }
+    } catch (error) {
+        console.error('Signup error:', error);
+        showStatusMessage('Account creation failed. Please try again.', 'error');
     }
-    
-    if (users.find(u => u.email === email)) {
-        showStatusMessage('Email already registered', 'error');
-        showLoading(false);
-        return;
-    }
-    
-    // Create new user
-    const newUser = {
-        id: Date.now().toString(),
-        fullName,
-        email,
-        username,
-        password, // In real app, this would be hashed
-        createdAt: new Date().toISOString(),
-        accountNumber: generateAccountNumber(),
-        currentBalance: 1000.00, // Starting balance
-        savingsBalance: 5000.00  // Starting savings
-    };
-    
-    users.push(newUser);
-    localStorage.setItem('ltb_users', JSON.stringify(users));
-    
-    showStatusMessage('Account created successfully! Redirecting to login...', 'success');
-    
-    // Clear form
-    document.getElementById('signupForm').reset();
-    
-    // Redirect to login page after delay
-    setTimeout(() => {
-        window.location.href = `login.html?username=${encodeURIComponent(username)}&success=signup`;
-    }, 2000);
     
     showLoading(false);
 }
