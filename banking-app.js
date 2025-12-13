@@ -162,8 +162,15 @@ async function handleLogin(e) {
 
 function signOut() {
     console.log('Signing out user');
-    localStorage.removeItem('legacyTrustUser');
+    localStorage.removeItem('ltb_user');
+    sessionStorage.removeItem('ltb_user');
+    localStorage.removeItem('legacyTrustUser'); // Remove old key as well
     currentUser = null;
+    
+    // Cleanup Firebase listeners
+    if (typeof cleanupFirebaseListeners === 'function') {
+        cleanupFirebaseListeners();
+    }
     
     // Reset forms
     const loginForm = document.getElementById('loginForm');
