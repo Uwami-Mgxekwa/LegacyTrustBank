@@ -24,6 +24,10 @@ function initializeFirebaseBanking() {
                 console.log('🔥 Demo user detected, initializing demo data');
                 // Initialize demo data
                 setTimeout(initializeDemoData, 100); // Small delay to ensure DOM is ready
+            } else if (userData.accountType === 'local') {
+                console.log('🔥 Local user detected, initializing local data');
+                // Initialize data for local storage users
+                setTimeout(initializeLocalUserData, 100);
             } else {
                 console.log('🔥 Unknown user type, initializing demo data as fallback');
                 setTimeout(initializeDemoData, 100);
@@ -98,6 +102,51 @@ function initializeDemoData() {
     ];
     
     updateTransactionsUI(demoTransactions);
+}
+
+// Initialize data for local storage users
+function initializeLocalUserData() {
+    console.log('🔥 Initializing local user data...');
+    
+    const savedUser = localStorage.getItem('ltb_user');
+    if (!savedUser) return;
+    
+    try {
+        const userData = JSON.parse(savedUser);
+        const existingUsers = JSON.parse(localStorage.getItem('ltb_users') || '[]');
+        const localUser = existingUsers.find(user => user.id === userData.id);
+        
+        if (localUser) {
+            // Set user balances
+            const currentBalanceElement = document.getElementById('currentBalance');
+            const savingsBalanceElement = document.getElementById('savingsBalance');
+            
+            if (currentBalanceElement) currentBalanceElement.textContent = (localUser.currentBalance || 1000).toFixed(2);
+            if (savingsBalanceElement) savingsBalanceElement.textContent = (localUser.savingsBalance || 5000).toFixed(2);
+            
+            // Set summary cards
+            const monthlyIncomeElement = document.getElementById('monthlyIncome');
+            const monthlyExpensesElement = document.getElementById('monthlyExpenses');
+            const netChangeElement = document.getElementById('netChange');
+            
+            if (monthlyIncomeElement) monthlyIncomeElement.textContent = '+ R 0.00';
+            if (monthlyExpensesElement) monthlyExpensesElement.textContent = '- R 0.00';
+            if (netChangeElement) {
+                netChangeElement.textContent = 'R 0.00';
+                netChangeElement.style.color = '#28a745';
+            }
+            
+            // Initialize empty transactions for new users
+            const transactions = localUser.transactions || [];
+            updateTransactionsUI(transactions);
+            
+            console.log('✅ Local user data initialized');
+        }
+    } catch (error) {
+        console.error('❌ Error initializing local user data:', error);
+        // Fallback to demo data
+        initializeDemoData();
+    }
 }
 
 // Setup real-time listeners for user data
