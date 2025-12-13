@@ -133,27 +133,53 @@ async function handleLogin(e) {
             console.log('Demo login successful, user:', currentUser);
             localStorage.setItem('ltb_user', JSON.stringify(currentUser));
         } else {
-            // Try Firebase authentication for real users
-            const result = await window.FirebaseAuth.signIn(username, password);
-            if (result.success) {
-                // Get user data from Firebase
-                const userData = await window.FirebaseDB.findUserByUsername(username);
-                if (userData) {
+            // Try Firebase authentication first
+            let firebaseSuccess = false;
+            
+            try {
+                const result = await window.FirebaseAuth.signIn(username, password);
+                if (result.success) {
+                    // Get user data from Firebase
+                    const userData = await window.FirebaseDB.findUserByUsername(username);
+                    if (userData) {
+                        currentUser = {
+                            id: userData.id,
+                            username: userData.profile.username,
+                            fullName: userData.profile.fullName,
+                            email: userData.profile.email,
+                            accountType: 'firebase',
+                            loginTime: new Date().toISOString()
+                        };
+                        localStorage.setItem('ltb_user', JSON.stringify(currentUser));
+                        console.log('Firebase login successful, user:', currentUser);
+                        firebaseSuccess = true;
+                    }
+                }
+            } catch (firebaseError) {
+                console.warn('Firebase login failed, trying local storage:', firebaseError);
+            }
+            
+            if (!firebaseSuccess) {
+                // Fallback to local storage authentication
+                const existingUsers = JSON.parse(localStorage.getItem('ltb_users') || '[]');
+                const localUser = existingUsers.find(user => 
+                    user.username === username && user.password === password
+                );
+                
+                if (localUser) {
                     currentUser = {
-                        id: userData.id,
-                        username: userData.profile.username,
-                        fullName: userData.profile.fullName,
-                        email: userData.profile.email,
-                        accountType: 'firebase',
+                        id: localUser.id,
+                        username: localUser.username,
+                        fullName: localUser.fullName,
+                        email: localUser.email,
+                        accountType: 'local',
                         loginTime: new Date().toISOString()
                     };
                     localStorage.setItem('ltb_user', JSON.stringify(currentUser));
-                    console.log('Firebase login successful, user:', currentUser);
+                    console.log('Local storage login successful, user:', currentUser);
                 } else {
-                    throw new Error('User data not found');
+                    throw new Error('Invalid username or password');
                 }
-            } else {
-                throw new Error(result.error || 'Invalid credentials');
             }
         }
         
