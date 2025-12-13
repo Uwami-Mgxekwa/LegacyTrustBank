@@ -125,7 +125,7 @@ function updateUIWithFirebaseData(userData) {
     }
     
     // Update summary cards if they exist
-    updateSummaryCards(userData);
+    updateFirebaseSummaryCards(userData);
     
     console.log('✅ UI updated with Firebase data');
 }
@@ -213,7 +213,7 @@ function updateTransactionsUI(transactions) {
 }
 
 // Update summary cards with calculated data
-function updateSummaryCards(userData) {
+function updateFirebaseSummaryCards(userData) {
     if (!userData || !userData.transactions) {
         // Set default values if no transactions
         const monthlyIncomeElement = document.getElementById('monthlyIncome');

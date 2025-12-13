@@ -557,7 +557,7 @@ function showLoginScreen() {
 
 function showBankingInterface() {
     console.log('Showing banking interface');
-    const loginScreen = document.getElementById('loginScreen');
+    const loadingScreen = document.getElementById('loadingScreen');
     const bankingInterface = document.getElementById('bankingInterface');
     
     if (loginScreen) loginScreen.classList.add('hidden');
