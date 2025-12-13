@@ -560,10 +560,11 @@ function showBankingInterface() {
     const loadingScreen = document.getElementById('loadingScreen');
     const bankingInterface = document.getElementById('bankingInterface');
     
-    if (loginScreen) loginScreen.classList.add('hidden');
+    if (loadingScreen) loadingScreen.classList.add('hidden');
     if (bankingInterface) bankingInterface.classList.remove('hidden');
     
     showSection('dashboard');
+    console.log('✅ Banking interface shown, loading screen hidden');
 }
 
 // Global functions for onclick handlers
