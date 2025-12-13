@@ -378,9 +378,11 @@ if (typeof handleTransfer === 'function') {
 
 // Initialize when DOM is loaded
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeFirebaseBanking);
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initializeFirebaseBanking, 100); // Small delay to ensure Firebase is ready
+    });
 } else {
-    initializeFirebaseBanking();
+    setTimeout(initializeFirebaseBanking, 100);
 }
 
 // Cleanup on page unload
