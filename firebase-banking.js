@@ -14,13 +14,81 @@ function initializeFirebaseBanking() {
     if (savedUser) {
         try {
             const userData = JSON.parse(savedUser);
-            if (userData.id) {
+            
+            // Only setup Firebase listeners for non-demo users
+            if (userData.id && userData.accountType !== 'demo') {
                 setupFirebaseListeners(userData.id);
+            } else if (userData.accountType === 'demo') {
+                console.log('🔥 Demo user detected, skipping Firebase listeners');
+                // Initialize demo data
+                initializeDemoData();
             }
         } catch (error) {
             console.error('Error parsing saved user:', error);
         }
     }
+}
+
+// Initialize demo data for demo users
+function initializeDemoData() {
+    console.log('🔥 Initializing demo data...');
+    
+    // Set demo balances
+    const currentBalanceElement = document.getElementById('currentBalance');
+    const savingsBalanceElement = document.getElementById('savingsBalance');
+    
+    if (currentBalanceElement) currentBalanceElement.textContent = '4780.00';
+    if (savingsBalanceElement) savingsBalanceElement.textContent = '73500.00';
+    
+    // Set demo summary cards
+    const monthlyIncomeElement = document.getElementById('monthlyIncome');
+    const monthlyExpensesElement = document.getElementById('monthlyExpenses');
+    const netChangeElement = document.getElementById('netChange');
+    
+    if (monthlyIncomeElement) monthlyIncomeElement.textContent = '+ R 8500.00';
+    if (monthlyExpensesElement) monthlyExpensesElement.textContent = '- R 3200.00';
+    if (netChangeElement) {
+        netChangeElement.textContent = '+ R 5300.00';
+        netChangeElement.style.color = '#28a745';
+    }
+    
+    // Add demo transactions
+    const demoTransactions = [
+        {
+            id: 'demo1',
+            type: 'transfer_in',
+            amount: 2500.00,
+            reference: 'Salary Payment',
+            timestamp: Date.now() - 86400000, // 1 day ago
+            status: 'completed'
+        },
+        {
+            id: 'demo2',
+            type: 'transfer_out',
+            amount: -150.00,
+            reference: 'Grocery Shopping',
+            timestamp: Date.now() - 172800000, // 2 days ago
+            status: 'completed'
+        },
+        {
+            id: 'demo3',
+            type: 'transfer_out',
+            amount: -75.00,
+            reference: 'Coffee Shop',
+            timestamp: Date.now() - 259200000, // 3 days ago
+            status: 'completed'
+        },
+        {
+            id: 'demo4',
+            type: 'transfer_in',
+            amount: 500.00,
+            reference: 'Freelance Payment',
+            timestamp: Date.now() - 345600000, // 4 days ago
+            status: 'completed'
+        }
+    ];
+    
+    updateTransactionsUI(demoTransactions);
 }
 
 // Setup real-time listeners for user data
@@ -146,7 +214,20 @@ function updateTransactionsUI(transactions) {
 
 // Update summary cards with calculated data
 function updateSummaryCards(userData) {
-    if (!userData.transactions) return;
+    if (!userData || !userData.transactions) {
+        // Set default values if no transactions
+        const monthlyIncomeElement = document.getElementById('monthlyIncome');
+        const monthlyExpensesElement = document.getElementById('monthlyExpenses');
+        const netChangeElement = document.getElementById('netChange');
+        
+        if (monthlyIncomeElement) monthlyIncomeElement.textContent = '+ R 0.00';
+        if (monthlyExpensesElement) monthlyExpensesElement.textContent = '- R 0.00';
+        if (netChangeElement) {
+            netChangeElement.textContent = 'R 0.00';
+            netChangeElement.style.color = '#28a745';
+        }
+        return;
+    }
     
     const transactions = Object.values(userData.transactions);
     const currentMonth = new Date().getMonth();
