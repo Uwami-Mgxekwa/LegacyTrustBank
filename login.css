@@ -336,7 +336,12 @@
 }
 
 .checkbox-wrapper input[type="checkbox"] {
-    display: none;
+    position: absolute;
+    opacity: 0;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
 }
 
 .checkmark {
@@ -357,6 +362,12 @@
 .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
     content: '✓';
     position: absolute;
+}
+
+.checkbox-wrapper input[type="checkbox"]:focus + .checkmark {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
