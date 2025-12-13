@@ -101,7 +101,7 @@
                         <label for="signupFullName">Full Name</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user"></i>
-                            <input type="text" id="signupFullName" placeholder="Enter your full name" required>
+                            <input type="text" id="signupFullName" name="fullName" placeholder="Enter your full name" required minlength="2">
                         </div>
                     </div>
                     
@@ -109,7 +109,7 @@
                         <label for="signupEmail">Email Address</label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                            <input type="email" id="signupEmail" name="email" placeholder="Enter your email" required>
                         </div>
                     </div>
                     
@@ -117,7 +117,7 @@
                         <label for="signupUsername">Username</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user-circle"></i>
-                            <input type="text" id="signupUsername" placeholder="Choose a username" required>
+                            <input type="text" id="signupUsername" name="username" placeholder="Choose a username" required minlength="3" pattern="[a-zA-Z0-9_]+">
                         </div>
                     </div>
                     
@@ -125,7 +125,7 @@
                         <label for="signupPassword">Password</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
-                            <input type="password" id="signupPassword" placeholder="Create a password" required>
+                            <input type="password" id="signupPassword" name="password" placeholder="Create a password" required minlength="6">
                             <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -142,7 +142,7 @@
                         <label for="confirmPassword">Confirm Password</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
-                            <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required minlength="6">
                             <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -151,7 +151,7 @@
                     
                     <div class="form-options">
                         <label class="checkbox-wrapper">
-                            <input type="checkbox" id="agreeTerms" required>
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
                             <span class="checkmark"></span>
                             I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
                         </label>
