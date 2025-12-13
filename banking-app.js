@@ -26,6 +26,13 @@ async function initializeApp() {
         updateCurrentDate();
         setupEventListeners();
         
+        // Add a timeout to prevent infinite loading
+        const initTimeout = setTimeout(() => {
+            console.log('⚠️ Initialization timeout, forcing interface show');
+            hideLoading();
+            showBankingInterface();
+        }, 10000); // 10 second timeout
+        
         // Check for saved session
         const savedUser = localStorage.getItem('ltb_user') || sessionStorage.getItem('ltb_user');
         if (savedUser) {
@@ -33,18 +40,23 @@ async function initializeApp() {
                 currentUser = JSON.parse(savedUser);
                 console.log('Found saved user:', currentUser);
                 await loadUserData(true); // Show loading for saved sessions
+                clearTimeout(initTimeout); // Clear timeout since we succeeded
                 showBankingInterface();
             } catch (error) {
                 console.log('Invalid saved session, clearing...');
+                localStorage.removeItem('ltb_user');
                 localStorage.removeItem('legacyTrustUser');
+                clearTimeout(initTimeout);
                 showLoginScreen();
             }
         } else {
             console.log('No saved session, showing login...');
+            clearTimeout(initTimeout);
             showLoginScreen();
         }
     } catch (error) {
         console.error('App initialization error:', error);
+        hideLoading();
         showLoginScreen();
     }
 }
@@ -183,7 +195,11 @@ function signOut() {
 
 // Data Loading
 async function loadUserData(showLoadingOverlay = true) {
-    if (!currentUser) return;
+    if (!currentUser) {
+        console.log('❌ No current user found');
+        if (showLoadingOverlay) hideLoading();
+        return;
+    }
     
     try {
         console.log('Loading user data for:', currentUser.username);
@@ -195,9 +211,11 @@ async function loadUserData(showLoadingOverlay = true) {
         }
         
         updateUI();
-        console.log('User data loaded successfully');
+        console.log('✅ User data loaded successfully');
     } catch (error) {
-        console.error('Error loading user data:', error);
+        console.error('❌ Error loading user data:', error);
+        // Still update UI with default values
+        updateUI();
     } finally {
         if (showLoadingOverlay) hideLoading();
     }
