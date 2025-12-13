@@ -76,35 +76,40 @@ async function handleLogin(e) {
         }, 1000);
         
     } else {
-        // Check if user exists in localStorage
-        const users = JSON.parse(localStorage.getItem('ltb_users') || '[]');
-        const user = users.find(u => u.username === username && u.password === password);
-        
-        if (user) {
-            // User login success
-            const userData = {
-                username: user.username,
-                fullName: user.fullName,
-                email: user.email,
-                accountType: 'user',
-                loginTime: new Date().toISOString()
-            };
+        try {
+            // Find user by username in Firebase
+            const user = await window.FirebaseDB.findUserByUsername(username);
             
-            // Store user session
-            if (rememberMe) {
-                localStorage.setItem('ltb_user', JSON.stringify(userData));
-                localStorage.setItem('ltb_remember', 'true');
+            if (user && user.profile.password === password) {
+                // User login success
+                const userData = {
+                    id: user.id,
+                    username: user.profile.username,
+                    fullName: user.profile.fullName,
+                    email: user.profile.email,
+                    accountType: 'user',
+                    loginTime: new Date().toISOString()
+                };
+                
+                // Store user session
+                if (rememberMe) {
+                    localStorage.setItem('ltb_user', JSON.stringify(userData));
+                    localStorage.setItem('ltb_remember', 'true');
+                } else {
+                    sessionStorage.setItem('ltb_user', JSON.stringify(userData));
+                }
+                
+                showStatusMessage('Login successful! Redirecting...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
             } else {
-                sessionStorage.setItem('ltb_user', JSON.stringify(userData));
+                showStatusMessage('Invalid username or password', 'error');
             }
-            
-            showStatusMessage('Login successful! Redirecting...', 'success');
-            
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1000);
-        } else {
-            showStatusMessage('Invalid username or password', 'error');
+        } catch (error) {
+            console.error('Login error:', error);
+            showStatusMessage('Login failed. Please try again.', 'error');
         }
     }
     
