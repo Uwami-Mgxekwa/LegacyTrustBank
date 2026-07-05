@@ -25,3 +25,4 @@ replay_pid*
 /dist/
 commit.bat
 test.txt
+/examples
