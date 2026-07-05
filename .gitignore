@@ -26,3 +26,7 @@ replay_pid*
 commit.bat
 test.txt
 /examples
+
+# SQLite database file — each user gets their own local copy
+bankdata.db
+/ATM/nbproject/private/

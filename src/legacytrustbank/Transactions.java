@@ -15,7 +15,7 @@ public class Transactions extends javax.swing.JFrame {
     }
 
     private final SupabaseService supabaseService;
-    private final int currentUserId = 1;
+    private final int currentUserId = Login.getCurrentUserId();
 
     private void loadTransactionsFromDatabase() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();

@@ -3,83 +3,36 @@ package legacytrustbank;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Image;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
 
 public class Transfer extends javax.swing.JFrame {
 
- 
+    private final SupabaseService supabaseService;
+    private final int currentUserId;
+    private double Balance;
+    private double savingBal;
+
     public Transfer() {
         initComponents();
-        Image icon = new ImageIcon("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/images/newLogo.png").getImage(); 
+        supabaseService = new SupabaseService();
+        currentUserId = Login.getCurrentUserId();
+        Image icon = new ImageIcon(getClass().getResource("/images/newLogo.png")).getImage();
         this.setIconImage(icon);
         loadAndDisplayCurrentBalance();
         loadAndDisplaySavingBalance();
     }
-    
-    double Balance = loadCurrentBalance();
-    double savingBal = loadSavingBalance();
-    
-    
-    private void saveCurrentBalance(double balance) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/CurrentBalance.txt"))) {
-            writer.write(String.valueOf(balance));
-        } catch (IOException e) {
-            System.out.println("An error occurred while saving the balance: " + e.getMessage());
-        }
-    }
-    private void saveSaveBalance(double saveBalance) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/SavingsBalance.txt"))) {
-            writer.write(String.valueOf(saveBalance));
-        } catch (IOException e) {
-            System.out.println("An error occurred while saving the balance: " + e.getMessage());
-        }
-    }
-     
-     private double loadCurrentBalance() {
-    double balance=0; // Default balance
-    try (BufferedReader reader = new BufferedReader(new FileReader("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/CurrentBalance.txt"))) {
-        String line = reader.readLine();
-        if (line != null) {
-            balance = Double.parseDouble(line);
-        }
-    } catch (IOException e) {
-        System.out.println("An error occurred while loading the balance: " + e.getMessage());
-    }
-    return balance;
-}
-    
-    private void loadAndDisplayCurrentBalance() { 
-        double balance = loadCurrentBalance();
-        String displayAmount = String.valueOf(balance);
-        currentBalance.setText(displayAmount);
-    }
-    
-    private double loadSavingBalance() {
-    double balance=0; // Default balance
-    try (BufferedReader reader = new BufferedReader(new FileReader("C:/Users/user/Desktop/JAVA/LegacyTrustBank/src/legacytrustbank/SavingsBalance.txt"))) {
-        String line = reader.readLine();
-        if (line != null) {
-            balance = Double.parseDouble(line);
-        }
-    } catch (IOException e) {
-        System.out.println("An error occurred while loading the balance: " + e.getMessage());
-    }
-    return balance;
-}
 
-    
-    private void loadAndDisplaySavingBalance() { 
-        double balance = loadSavingBalance();
-        String displayAmount = String.valueOf(balance);
-        saving.setText(displayAmount);
-    } 
+    private void loadAndDisplayCurrentBalance() {
+        Balance = supabaseService.getAccountBalance(currentUserId, "Current");
+        currentBalance.setText(String.format("%.2f", Balance));
+    }
+
+    private void loadAndDisplaySavingBalance() {
+        savingBal = supabaseService.getAccountBalance(currentUserId, "Savings");
+        saving.setText(String.format("%.2f", savingBal));
+    }
 
 
     @SuppressWarnings("unchecked")
@@ -539,61 +492,71 @@ public class Transfer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String curentBal  = txtCurrent.getText();
-        
-        
-        if(curentBal.isBlank()){
+        String curentBal = txtCurrent.getText().trim();
+
+        if (curentBal.isBlank()) {
             messageA.setForeground(Color.red);
             messageA.setText("Field can not be empty.");
-        }
-        else{
-            double currentAmount = Double.parseDouble(curentBal);
-            new Correct().setVisible(true);
-            
-            Balance = Balance - currentAmount;
-            String DisplayAmount = String.valueOf(Balance);
-            currentBalance.setText(DisplayAmount);
+        } else {
+            try {
+                double currentAmount = Double.parseDouble(curentBal);
+                if (currentAmount <= 0 || currentAmount > Balance) {
+                    messageA.setForeground(Color.red);
+                    messageA.setText(currentAmount <= 0 ? "Enter a positive amount." : "Insufficient funds.");
+                    return;
+                }
+                Balance -= currentAmount;
+                savingBal += currentAmount;
 
-            savingBal = savingBal + currentAmount;
-            String DisplaySaveAmount = String.valueOf(savingBal);
-            saving.setText(DisplaySaveAmount);
+                supabaseService.updateAccountBalance(currentUserId, "Current", Balance);
+                supabaseService.updateAccountBalance(currentUserId, "Savings", savingBal);
+                supabaseService.recordTransaction(currentUserId, "Current", "Transfer Out", currentAmount, "Transfer to Savings");
+                supabaseService.recordTransaction(currentUserId, "Savings", "Transfer In", currentAmount, "Transfer from Current");
 
-            messageA.setForeground(Color.green);
-            messageA.setText("R"+currentAmount+" Transfered to Saving Account");
-            
-            saveCurrentBalance(Balance);
-            saveSaveBalance(savingBal);
+                currentBalance.setText(String.format("%.2f", Balance));
+                saving.setText(String.format("%.2f", savingBal));
+                messageA.setForeground(Color.green);
+                messageA.setText("R" + String.format("%.2f", currentAmount) + " transferred to Savings");
+                new Correct().setVisible(true);
+            } catch (NumberFormatException e) {
+                messageA.setForeground(Color.red);
+                messageA.setText("Invalid amount entered.");
+            }
         }
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-            String savingBall  = txtSaving.getText();
-            
-            
-            if(savingBall.isBlank()){
-                messageB.setForeground(Color.red);
-                messageB.setText("Field can not be empty.");
-            }
-            else{
+        String savingBall = txtSaving.getText().trim();
+
+        if (savingBall.isBlank()) {
+            messageB.setForeground(Color.red);
+            messageB.setText("Field can not be empty.");
+        } else {
+            try {
                 double savingAmount = Double.parseDouble(savingBall);
-                new Correct().setVisible(true);
-                Balance = Balance + savingAmount;
-                String DisplayAmount = String.valueOf(Balance);
-                currentBalance.setText(DisplayAmount);
+                if (savingAmount <= 0 || savingAmount > savingBal) {
+                    messageB.setForeground(Color.red);
+                    messageB.setText(savingAmount <= 0 ? "Enter a positive amount." : "Insufficient funds.");
+                    return;
+                }
+                Balance += savingAmount;
+                savingBal -= savingAmount;
 
-                savingBal = savingBal - savingAmount;
-                String DisplaySaveAmount = String.valueOf(savingBal);
-                saving.setText(DisplaySaveAmount);
+                supabaseService.updateAccountBalance(currentUserId, "Current", Balance);
+                supabaseService.updateAccountBalance(currentUserId, "Savings", savingBal);
+                supabaseService.recordTransaction(currentUserId, "Savings", "Transfer Out", savingAmount, "Transfer to Current");
+                supabaseService.recordTransaction(currentUserId, "Current", "Transfer In", savingAmount, "Transfer from Savings");
 
+                currentBalance.setText(String.format("%.2f", Balance));
+                saving.setText(String.format("%.2f", savingBal));
                 messageB.setForeground(Color.green);
-                messageB.setText("R"+savingAmount+" Transfered to Current Account");
-
-                saveCurrentBalance(Balance);
-                saveSaveBalance(savingBal);
+                messageB.setText("R" + String.format("%.2f", savingAmount) + " transferred to Current");
+                new Correct().setVisible(true);
+            } catch (NumberFormatException e) {
+                messageB.setForeground(Color.red);
+                messageB.setText("Invalid amount entered.");
             }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
