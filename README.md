@@ -2,8 +2,6 @@
 
 A desktop banking application built with Java Swing. Users can register, log in, manage a Current and Savings account, transfer funds, send money, and view full transaction history. An admin panel and a companion ATM application are also included.
 
-![Load Screen](screenshots/load-screen.gif)
-
 ---
 
 ## Screenshots
@@ -31,6 +29,8 @@ A desktop banking application built with Java Swing. Users can register, log in,
 
 ### Admin Login
 ![Admin Login](screenshots/admin-login-screen.png)
+
+![Load Screen](screenshots/load-screen.gif)
 
 ---
 
