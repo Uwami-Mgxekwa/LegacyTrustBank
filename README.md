@@ -2,8 +2,6 @@
 
 A desktop banking application built with Java Swing. Users can register, log in, manage a Current and Savings account, transfer funds, send money, and view full transaction history. An admin panel and a companion ATM application are also included.
 
-![Load Screen](screenshots/load-screen.gif)
-
 ---
 
 ## Screenshots
@@ -31,6 +29,8 @@ A desktop banking application built with Java Swing. Users can register, log in,
 
 ### Admin Login
 ![Admin Login](screenshots/admin-login-screen.png)
+
+![Load Screen](screenshots/load-screen.gif)
 
 ---
 
@@ -90,25 +90,6 @@ A desktop banking application built with Java Swing. Users can register, log in,
    - Click **Sign Up** on the login screen to register
 
 > No database server or configuration needed. The database (`bankdata.db`) is generated automatically at `C:\ProgramData\LegacyTrustBank\bankdata.db` and is shared between the bank app and the ATM.
-
----
-
-## ATM Application
-
-The ATM is a separate companion app located in the `ATM/` folder. It connects to the same shared database, so any account created in the bank app works directly in the ATM.
-
-### ATM Features
-- PIN login using your bank app credentials
-- Check balance (Current account)
-- Deposit to Current or Savings
-- Withdraw from Current or Savings
-- Send money to other registered users
-
-### Running the ATM
-1. Open the `ATM/` folder as a separate NetBeans project
-2. Add `ATM/lib/sqlite-jdbc-3.53.2.0.jar` to the ATM project libraries
-3. Set `AtmLogin.java` as the main class
-4. Run — log in with the same username and password used in the bank app
 
 ---
 
