@@ -23,7 +23,7 @@
 hs_err_pid*
 replay_pid*
 /dist/
-/examples
+/examples/
 
 # SQLite database file — each user gets their own local copy
 bankdata.db
