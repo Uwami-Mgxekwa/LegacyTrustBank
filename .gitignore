@@ -23,8 +23,6 @@
 hs_err_pid*
 replay_pid*
 /dist/
-commit.bat
-test.txt
 /examples
 
 # SQLite database file — each user gets their own local copy
